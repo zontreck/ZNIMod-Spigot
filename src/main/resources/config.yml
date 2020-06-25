@@ -1,0 +1,7 @@
+spawn:
+  IsSet: false
+antigrief:
+  preventBlockFall: true
+  preventNonPlayerBlockChange: true
+  healFire: true
+  healExplode: true

@@ -1,0 +1,279 @@
+main: zeenai.server.Main
+name: ZNIMod
+version: 1.0
+api-version: 1.15
+permissions:
+  znimod.adminCommands:
+    description: "Protects critical server functions against unauthorized users"
+    default: op
+  znimod.opCommands:
+    description: "Op only permissions"
+    default: op
+  znimod.mkwarp:
+    description: "Permission needed to create a warp"
+  znimod.notes:
+    description: "Permission needed to interact with virtual notes"
+  znimod.customPrefix:
+    description: "Permits use of any prefix or color"
+  znimod.unlimitedVC:
+    description: "VIP Perk - Unlimited Virtual Chest Storage"
+  znimod.flight:
+    description: "VIP Perk - Fly without Elytra"
+commands:
+  sethome:
+    description: Sets home to your current location
+    usage: /sethome [string:HomeName]
+    aliases: [sh]
+  home:
+    description: Go to a home location
+    usage: /home [string:HomeName]
+    aliases: [h]
+  removehome:
+    description: Removes the custom player home
+    usage: /removehome [string:HomeName]
+    aliases: [rmhome, rmh, rh]
+  setspawn:
+    description: Sets the spawn location
+    usage: /setspawn
+    aliases: [ss]
+    permissions: "znimod.opCommands"
+  respawn:
+    description: Returns you to the spawn
+    usage: /respawn
+    aliases: [s, spawn]
+  playervault:
+    description: Opens your custom player vault
+    usage: /playervault [string:identity]
+    aliases: [pv]
+    permissions: "znimod.unlimitedVC"
+  oplayervault:
+    description: Opens the specified player's vault
+    usage: /oplayervault [string:PlayerName] [string:identity]
+    aliases: [opv, othervault, viewinv, peek]
+    permissions: "znimod.adminCommands"
+  gotoheight:
+    description: Instant teleport to a specified height on the Y axis
+    usage: /gotoheight [decimal:Height]
+    aliases: [gth]
+    permissions: "znimod.adminCommands"
+  rmvault:
+    description: Removes one of your vaults and rezzes the items immediately in game at your position
+    usage: /rmvault [string:Identity]
+    aliases: [rmv]
+  nukevault:
+    description: Nukes a vault, deleting it and its contained items forever
+    usage: /nukevault [string:Player] [string:Identity]
+    permissions: "znimod.adminCommands"
+  homes:
+    description: Lists homes
+    usage: /homes [string:Player:optional]
+    aliases: [lh]
+  vaults:
+    description: Lists vaults
+    usage: /vaults [string:Player:optional]
+    aliases: [lv]
+  back:
+    description: Returns you to your point of death
+    usage: /back
+  alwaysxp:
+    description: Toggles your always XP on death state!
+    usage: /alwaysxp
+  xp:
+    description: Manipulates experience points
+    usage: /xp [add/rem/get] [player] [amount:optionalForGet]
+    permissions: "znimod.adminCommands"
+  gamemode:
+    description: Changes your gamemode
+    usage: /gamemode [int:Mode] [string:TargetPlayer:optional]
+    permissions: "znimod.adminCommands"
+    aliases: [gm]
+  pushinv:
+    description: Push current inventory onto vault
+    usage: /pushinv [string:VaultID]
+    permissions: "znimod.unlimitedVC"
+  popinv:
+    description: Pop vault back to inventory
+    usage: /popinv [string:VaultID]
+  setwarp:
+    description: Set warp
+    usage: /setwarp [string:WarpName]
+    aliases: [swarp]
+  warp:
+    description: Warp to location
+    usage: /warp [string:WarpName]
+  warps:
+    description: List all server warps
+    usage: /warps
+  delwarp:
+    description: Deletes a server warp
+    usage: /delwarp [string:WarpName]
+    aliases: [rmwarp]
+  prefixcolor:
+    description: Opens color selection menu for prefix
+    usage: /prefixc
+    aliases: [prefixc]
+    permissions: "znimod.customPrefix"
+  color:
+    description: Opens the chat color menu
+    usage: /color
+    aliases: [chatcolor]
+  prefix:
+    description: Sets the prefix text!
+    usage: /prefix
+    permissions: "znimod.customPrefix"
+  namecolor:
+    description: Colors your name
+    usage: /cname
+    aliases: [cname, cn]
+  znireload:
+    description: Reload the ZNIMod configuration
+    usage: /znireload
+    permissions: "znimod.adminCommands"
+  trash:
+    description: Opens a null inventory window to throw away items
+    usage: /trash
+  getChunk:
+    description: Gets the chunk x and z coordinates
+    usage: /getChunk
+  listfl:
+    description: Lists force loaded chunks
+    usage: /listfl
+    aliases: [lfl, listflchunks, listforceloaded]
+    permissions: "znimod.adminCommands"
+  flchunk:
+    description: Toggles force load for the chunk the player is in
+    usage: /flchunk
+    aliases: [fl]
+    permissions: "znimod.opCommands"
+  viewinv:
+    description: Opens a player's inventory! (op required to edit!)
+    usage: /viewinv
+    aliases: [opi,vpi]
+  cost:
+    description: Checks the cost of the item in hand
+    usage: /cost
+  setcost:
+    description: Sets the cost for the item in hand
+    usage: /setcost [int:NewCost]
+    permissions: "znimod.adminCommands"
+  buylevel:
+    description: Buy experience levels (1 XP = 500)
+    usage: /buylevel [int:NumberOfLevels]
+  ignorebiome:
+    description: Sets a preference to not have the server tell you when you change biomes
+    usage: /ignorebiome
+  watchbiome:
+    description: Re-enables the biome change alerts if you previously disabled them
+    usage: /watchbiome
+  slime:
+    description: Tells you whether the chunk you are in is a slime chunk!
+    usage: /slime
+  withdraw:
+    description: Withdraws emeralds from player balance
+    usage: /withdraw
+  webtoken:
+    description: Generates a single-use token to access the Zontreck.dev website
+    usage: /webtoken
+  fly:
+    description: Toggles flight (Admin command permission required)
+    usage: /fly
+    permissions: "znimod.flight"
+  autochop:
+    description: Toggles autochop for you
+    usage: /autochop
+  viewradius:
+    description: Sets blocks in radius to bedrock
+    usage: /viewradius [radius]
+    permissions: "znimod.adminCommands"
+  undochop:
+    description: UNDO LAST AUTOCHOP ACTION
+    usage: /undochop
+  checkqueue:
+    description: Outputs the current number of blocks in the restore queue
+    usage: /checkqueue
+  showhealstats:
+    description: Heal Stats toggle
+    usage: /showhealstats
+  p2:
+    description: Pass 2 trigger
+    usage: /p2
+  heal:
+    description: Finish healing immediately
+    usage: /heal
+  clearradius:
+    description: Clear a radius of blocks using explosion heal pattern (Test)
+    usage: /clearradius [int:Radius]
+    permissions: "znimod.adminCommands"
+    aliases: [clr]
+  restorebackup:
+    description: Restore backup of blocks (TEST)
+    usage: /restorebackup
+    permissions: "znimod.adminCommands"
+    aliases: [rbr]
+  clearbackup:
+    description: Clear backup map (Test)
+    usage: /clearbackup
+    permissions: "znimod.adminCommands"
+    aliases: [clrbak]
+  zpos1:
+    description: Sets zPos1
+    usage: /zpos1
+  zpos2:
+    description: Sets zPos2
+    usage: /zpos2
+  posdebug:
+    description: Debugs the Vector3 Cube by setting the positions to bedrock
+    usage: /posdebug
+  saveschem:
+    description: Saves a schem3
+    usage: /saveschem [string:SchemName]
+  loadschem3:
+    description: Loads a schematic v3
+    usage: /loadschem3 [-a/-e] [string:SchemName]
+  clearqueue:
+    description: Clears queue
+    usage: /clearqueue
+    permissions: "znimod.adminCommands"
+    aliases: ["cq"]
+  setorigin:
+    description: Sets origin. Primarily used for the ZNIMod block modifiers for command blocks
+    usage: /setorigin <x> <y> <z> <worldName>
+  getpos:
+    description: Prints your current position for use in the setorigin command
+    usage: /getpos
+  unimport:
+    description: Undo import of schematic
+    usage: /unimport [-a/-e] [string:Schematic]
+  forceupdate:
+    description: Forcibly updates blocks near position.
+    usage: /forceupdate [x] [y] [z] [world] [radius]
+    permissions: "znimod.adminCommands"
+  setwarpperms:
+    description: Sets warp permissions
+    usage: /setwarpperms [0/1/2::owner/name/full]
+    aliases: ["swp"]
+  note:
+    description: Get note contents
+    usage: /note [noteName]
+    permissions: "znimod.notes"
+  notes:
+    description: Lists all notes
+    usage: /notes
+    permissions: "znimod.notes"
+  takenote:
+    description: Takes notes
+    usage: /takenote [noteName] [note..text...]
+    permissions: "znimod.notes"
+  prefixes:
+    description: Lists available prefixes
+    usage: /prefixes
+  delnote:
+    description: Deletes a saved note
+    usage: /delnote [noteName]
+    permissions: "znimod.notes"
+  applyprefix:
+    description: Automated command - used by /prefixes
+    usage: /prefixes
+  repair:
+    description: Purchases a full repair of the tool in hand. This will not reset anvil repair counts
+    usage: /repair

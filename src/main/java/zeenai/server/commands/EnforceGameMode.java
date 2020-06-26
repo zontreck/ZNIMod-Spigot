@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 import zeenai.server.Main;
 
@@ -15,6 +17,10 @@ public class EnforceGameMode implements Listener{
         
         if(!play.hasPermission("znimod.keepGamemode"))return;
 
+        DoGameModeSchedule(play);
+    }
+
+    private void DoGameModeSchedule(Player play) {
         Main.GetMainInstance().getServer().getScheduler().scheduleSyncDelayedTask(Main.GetMainInstance(), new Runnable(){
             @Override
             public void run(){
@@ -27,6 +33,13 @@ public class EnforceGameMode implements Listener{
                     play.setGameMode(GameMode.valueOf(LastGameMode));
                 }
             }
-        }, 500L);
+        }, 200L);
+    }
+
+    @EventHandler
+    public void LoginEvent(PlayerJoinEvent ev){
+        Player play = ev.getPlayer();
+        if(!play.hasPermission("znimod.keepGamemode"))return;
+        DoGameModeSchedule(play);
     }
 }

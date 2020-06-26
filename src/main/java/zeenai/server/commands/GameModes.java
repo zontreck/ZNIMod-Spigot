@@ -8,8 +8,11 @@ import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+
+import zeenai.server.Main;
 
 
 public class GameModes implements CommandExecutor, Listener {
@@ -62,6 +65,10 @@ public class GameModes implements CommandExecutor, Listener {
             }
         }
 
+        FileConfiguration conf = Main.GetMainInstance().getConfig();
+        conf.set("LastGameMode", finalGm.toString());
+        Main.GetMainInstance().saveConfig();
+        
         p.setGameMode(finalGm);
 
         return true;

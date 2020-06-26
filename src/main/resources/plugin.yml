@@ -19,6 +19,8 @@ permissions:
     description: "VIP Perk - Unlimited Virtual Chest Storage"
   znimod.flight:
     description: "VIP Perk - Fly without Elytra"
+  znimod.keepGamemode:
+    description: "A Permission that lets you keep your last gamemode"
 commands:
   sethome:
     description: Sets home to your current location

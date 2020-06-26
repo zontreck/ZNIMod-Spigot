@@ -26,6 +26,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -282,6 +283,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TreeFeller(), this);
         getServer().getPluginManager().registerEvents(new CheckForNewBiome(), this);
         getServer().getPluginManager().registerEvents(new ZAutoCraft(), this);
+        getServer().getPluginManager().registerEvents(new EnforceGameMode(), this);
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable(){
             @Override
@@ -401,6 +403,8 @@ public class Main extends JavaPlugin {
             }
 
         }, 0L, 50L);
+
+
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 

@@ -33,7 +33,7 @@ public class EnforceGameMode implements Listener{
                     play.setGameMode(GameMode.valueOf(LastGameMode));
                 }
             }
-        }, 200L);
+        }, 100L);
     }
 
     @EventHandler

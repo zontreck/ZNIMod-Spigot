@@ -6,6 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import zeenai.server.Main;
+import zeenai.server.PlayerConfig;
+
 public class Fly implements CommandExecutor {
 
     @Override
@@ -19,6 +22,9 @@ public class Fly implements CommandExecutor {
         }
         p.setAllowFlight(!p.getAllowFlight());
         p.sendMessage(ChatColor.GREEN+"Success!");
+        
+        PlayerConfig.GetConfig(p).set("flight", p.getAllowFlight());
+        PlayerConfig.SaveConfig(p);
         return true;
     }
     

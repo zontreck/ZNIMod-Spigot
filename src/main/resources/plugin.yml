@@ -21,6 +21,8 @@ permissions:
     description: "VIP Perk - Fly without Elytra"
   znimod.keepGamemode:
     description: "A Permission that lets you keep your last gamemode"
+  znimod.keepFly:
+    description: "A Permission that will keep fly status set statically on gamemode change"
 commands:
   sethome:
     description: Sets home to your current location

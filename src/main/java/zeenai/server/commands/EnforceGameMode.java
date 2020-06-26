@@ -5,10 +5,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 import zeenai.server.Main;
+import zeenai.server.PlayerConfig;
 
 public class EnforceGameMode implements Listener{
     @EventHandler
@@ -18,6 +20,25 @@ public class EnforceGameMode implements Listener{
         if(!play.hasPermission("znimod.keepGamemode"))return;
 
         DoGameModeSchedule(play);
+
+
+        if(!play.hasPermission("znimod.keepFly"))return;
+        DoFlySchedule(play);
+
+    }
+
+    private void DoFlySchedule(Player play){
+        Main.GetMainInstance().getServer().getScheduler().scheduleSyncDelayedTask(Main.GetMainInstance(), new Runnable(){
+        
+            @Override
+            public void run() {
+                boolean LastFly = PlayerConfig.GetConfig(play).getBoolean("flight");
+                if(LastFly == play.getAllowFlight())return;
+                else{
+                    play.setAllowFlight(LastFly);
+                }
+            }
+        }, 50L);
     }
 
     private void DoGameModeSchedule(Player play) {
@@ -25,7 +46,7 @@ public class EnforceGameMode implements Listener{
             @Override
             public void run(){
 
-                String LastGameMode = Main.GetMainInstance().getConfig().getString("LastGameMode");
+                String LastGameMode = PlayerConfig.GetConfig(play).getString("LastGameMode");
                 if(LastGameMode == play.getGameMode().toString()){
                     // do nothing
                     return;
@@ -33,7 +54,7 @@ public class EnforceGameMode implements Listener{
                     play.setGameMode(GameMode.valueOf(LastGameMode));
                 }
             }
-        }, 100L);
+        }, 50L);
     }
 
     @EventHandler
@@ -41,5 +62,17 @@ public class EnforceGameMode implements Listener{
         Player play = ev.getPlayer();
         if(!play.hasPermission("znimod.keepGamemode"))return;
         DoGameModeSchedule(play);
+        if(!play.hasPermission("znimod.keepFly"))return;
+        DoFlySchedule(play);
+    }
+
+    @EventHandler
+    public void GameModeChanged(PlayerGameModeChangeEvent ev){
+        Player play = ev.getPlayer();
+        if(!play.hasPermission("znimod.keepGamemode"))return;
+        DoGameModeSchedule(play);
+
+        if(!play.hasPermission("znimod.keepFly"))return;
+        DoFlySchedule(play);
     }
 }

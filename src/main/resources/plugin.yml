@@ -24,6 +24,10 @@ permissions:
   znimod.keepFly:
     description: "A Permission that will keep fly status set statically on gamemode change"
 commands:
+  setautostock:
+    description: Set automatic stock
+    usage: /setautostock [slotNumber] [MaterialName] [Quantity]
+    permissions: "znimod.opCommands"
   sethome:
     description: Sets home to your current location
     usage: /sethome [string:HomeName]

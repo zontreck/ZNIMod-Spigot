@@ -88,6 +88,7 @@ import zeenai.server.antigrief.Healer;
 import zeenai.server.antigrief.RestoreBackup;
 import zeenai.server.antigrief.StartPhase2;
 import zeenai.server.autocraft.ZAutoCraft;
+import zeenai.server.autostock.SetAutoStock;
 import zeenai.server.biomewatchdog.*;
 
 public class Main extends JavaPlugin {
@@ -269,6 +270,7 @@ public class Main extends JavaPlugin {
         getCommand("delnote").setExecutor(new DeleteNote());
         getCommand("applyprefix").setExecutor(new ApplyPrefix());
         getCommand("repair").setExecutor(new Repair());
+        getCommand("setautostock").setExecutor(new SetAutoStock());
 
 
 

@@ -21,8 +21,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.google.gson.Gson;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,7 +49,6 @@ import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.milkbowl.vault.economy.Economy;
-import scala.Predef.StringFormat;
 
 import org.bukkit.configuration.file.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -127,9 +124,7 @@ public class Main extends JavaPlugin {
     public Map<String, FileConfiguration> CustomConfigs = new HashMap<>();
     public Map<String, Biome> BiomesMap = new HashMap<>();
     public Map<String, Scoreboard> boards = new HashMap<String, Scoreboard>();
-    public WorldEditPlugin _worldEditor = null;
     public LuckPerms luckPerms = null;
-    public boolean hasWorldEdit = false;
     public boolean hasLuckPerms = false;
 
     public Economy econ;
@@ -172,12 +167,6 @@ public class Main extends JavaPlugin {
         getLogger().info("Hello spigot ZNIMod has arrived!");
         saveDefaultConfig();
 
-        _worldEditor = (WorldEditPlugin)getServer().getPluginManager().getPlugin("WorldEdit");
-        if(_worldEditor == null){
-            hasWorldEdit=false;
-        }else {
-            hasWorldEdit=true;
-        }
 
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if(provider==null){

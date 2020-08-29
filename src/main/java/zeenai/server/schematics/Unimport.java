@@ -39,11 +39,7 @@ public class Unimport implements CommandExecutor {
             schemName+=string;
         }
         if(!NullConfig.GetTempConfig(sender.getName()).contains("SetToAir"))NullConfig.GetTempConfig(sender.getName()).set("SetToAir",true);
-        if(!Main.GetMainInstance().hasWorldEdit){
-            sender.sendMessage("WorldEdit is required to continue");
-            return false;
-        }
-
+        
 
         
         try{

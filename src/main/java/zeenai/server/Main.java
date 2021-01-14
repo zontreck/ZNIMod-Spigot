@@ -126,6 +126,7 @@ public class Main extends JavaPlugin {
     public Map<String, Scoreboard> boards = new HashMap<String, Scoreboard>();
     public LuckPerms luckPerms = null;
     public boolean hasLuckPerms = false;
+    private boolean hasVault=false;
 
     public Economy econ;
 
@@ -178,9 +179,10 @@ public class Main extends JavaPlugin {
 
         if(!SetupEconomy()){
             getLogger().info("Soft Dependency vault not found");
+            hasVault=false;
             //getServer().getPluginManager().disablePlugin(this);
             //return;
-        }
+        }else hasVault=true;
 
         _playerVault = new PlayerVault();
         _otherPlayersVaults = new OtherPlayersVault();

@@ -177,9 +177,9 @@ public class Main extends JavaPlugin {
         }
 
         if(!SetupEconomy()){
-            getLogger().info("Dependency vault not found");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            getLogger().info("Soft Dependency vault not found");
+            //getServer().getPluginManager().disablePlugin(this);
+            //return;
         }
 
         _playerVault = new PlayerVault();

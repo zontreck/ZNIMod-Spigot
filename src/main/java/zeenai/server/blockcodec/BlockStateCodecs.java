@@ -34,6 +34,7 @@ public class BlockStateCodecs
         registerCodec(new StateCodec_Switch());
         registerCodec(new StateCodec_Door());
         registerCodec(new StateCodec_GlassPane());
+        registerCodec(new StateCodec_Wall());
     }
 
     public static boolean hasCodec(Material mat){

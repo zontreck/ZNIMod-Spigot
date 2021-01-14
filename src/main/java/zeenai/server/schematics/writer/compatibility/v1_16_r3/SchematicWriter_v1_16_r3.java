@@ -1,4 +1,4 @@
-package zeenai.server.schematics.writer.compatibility.v1_16_r1;
+package zeenai.server.schematics.writer.compatibility.v1_16_r3;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import zeenai.server.treechops.RestoreBlock;
 import zeenai.server.*;
 import zeenai.server.blockcodec.BlockStateCodecs;
 
-public class SchematicWriter_v1_16_r1 implements SchematicWriter {
+public class SchematicWriter_v1_16_r3 implements SchematicWriter {
 
     public Player CurrentPlayer;
     public String schematicName;

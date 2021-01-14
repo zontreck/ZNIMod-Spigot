@@ -48,7 +48,7 @@ public class PlayerCurrencyBoard implements Listener {
 
         
         Score _moneyCount = _Objective.getScore("Z$");
-        _moneyCount.setScore((int)Main.GetMainInstance().econ.getBalance(p));
+        _moneyCount.setScore(GetConfig(p).getInt("balance"));
         
 
 
@@ -86,7 +86,9 @@ public class PlayerCurrencyBoard implements Listener {
 
             // 
             int V = Currency.GetReward(e.getBlock().getType());
-            Main.GetMainInstance().econ.depositPlayer(e.getPlayer(), (int)V);
+            FileConfiguration fcx = GetConfig(p);
+            fcx.set("balance", fcx.getInt("balance")+(int)V);
+            //Main.GetMainInstance().econ.depositPlayer(e.getPlayer(), (int)V);
             
 
 
@@ -113,7 +115,7 @@ public class PlayerCurrencyBoard implements Listener {
         {
             Player p = (Player)ev.getWhoClicked();
             if(p.getGameMode() != GameMode.SURVIVAL)return; // only affect survival users!
-            double BALANCE = Main.GetMainInstance().econ.getBalance(p);
+            double BALANCE = GetConfig(p).getInt("balance");
             
             if(ev.getCurrentItem() != null && ev.getCurrentItem().getType()!= Material.AIR){
                 if(ev.getRawSlot() < ev.getInventory().getSize()){
@@ -127,8 +129,9 @@ public class PlayerCurrencyBoard implements Listener {
                         if(BALANCE >= BuyPrice){
                             // Perform purchase
                             p.sendMessage("Purchased : "+ev.getCurrentItem().getType().toString()+" / For : "+BuyPrice);
-                            Main.GetMainInstance().econ.withdrawPlayer(p, BuyPrice);
-    
+                            //Main.GetMainInstance().econ.withdrawPlayer(p, BuyPrice);
+                            GetConfig(p).set("balance", GetConfig(p).getInt("balance")-BuyPrice);
+
                             ItemStack _item = ev.getCurrentItem();
                             ItemStack _orig = _item.clone();
                             ev.setCancelled(true);
@@ -145,7 +148,7 @@ public class PlayerCurrencyBoard implements Listener {
                             p.getInventory().addItem(_orig);
                             p.updateInventory();
                             
-    
+                            SaveConfig(p);
                             
                         } else {
                             p.sendMessage("Purchase failure! You do not have enough Z$!");
@@ -159,7 +162,8 @@ public class PlayerCurrencyBoard implements Listener {
                         if(BALANCE >= BuyPrice){
 
                             p.sendMessage("Purchased : "+ev.getCurrentItem().getType().toString()+" / For : "+BuyPrice);
-                            Main.GetMainInstance().econ.withdrawPlayer(p, BuyPrice);
+                            GetConfig(p).set("balance", GetConfig(p).getInt("balance")-BuyPrice);
+                            SaveConfig(p);
 
                             ItemStack _item = ev.getCurrentItem();
 
@@ -183,7 +187,8 @@ public class PlayerCurrencyBoard implements Listener {
                         int MiningReward = Currency.GetReward(ev.getCurrentItem().getType());
                         int SellPrice = MiningReward-((MiningReward / 100) * 20);
                         // Sell item
-                        Main.GetMainInstance().econ.depositPlayer(p, SellPrice);
+                        GetConfig(p).set("balance", GetConfig(p).getInt("balance")+SellPrice);
+                        SaveConfig(p);
     
                         p.sendMessage("Sold : "+ev.getCurrentItem().getType().toString()+" / "+SellPrice);
     
@@ -209,7 +214,8 @@ public class PlayerCurrencyBoard implements Listener {
                         int MiningReward = Currency.GetReward(ev.getCurrentItem().getType());
                         int SellPrice = (MiningReward * ev.getCurrentItem().getAmount()) - ((MiningReward / 100) * 20);
                         
-                        Main.GetMainInstance().econ.depositPlayer(p,SellPrice);
+                        GetConfig(p).set("balance", GetConfig(p).getInt("balance")+SellPrice);
+                        SaveConfig(p);
 
                         p.sendMessage("Sold : "+ev.getCurrentItem().getType().toString()+" / "+SellPrice);
 

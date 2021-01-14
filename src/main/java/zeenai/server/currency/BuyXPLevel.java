@@ -20,7 +20,7 @@ public class BuyXPLevel implements CommandExecutor {
         int BuyLvlTotal = Integer.parseInt(args[0]);
 
         FileConfiguration fc = PlayerCurrencyBoard.GetConfig(p);
-        double BALANCE = Main.GetMainInstance().econ.getBalance(p);
+        double BALANCE = fc.getDouble("balance");
 
         if(BALANCE<XPCost){
             p.sendMessage("The cost for 1 XP point is 15 Z$. Go mining or sell some blocks!");

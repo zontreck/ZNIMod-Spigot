@@ -16,70 +16,81 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.type.Fence;
+import org.bukkit.block.data.type.Wall;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import zeenai.server.Main;
 import zeenai.server.NullConfig;
 
-public class StateCodec_Fence implements BlockStateCodec, Serializable {
-
-    /**
-     *
-     */
+public class StateCodec_Wall implements BlockStateCodec, Serializable
+{
+    
     private static final long serialVersionUID = 1L;
 
+    
     @Override
     public Material[] getApplicableMaterials() {
         return new Material[] { 
-            Material.ACACIA_FENCE, Material.BIRCH_FENCE, Material.DARK_OAK_FENCE, Material.JUNGLE_FENCE, Material.NETHER_BRICK_FENCE,
-            Material.OAK_FENCE, Material.SPRUCE_FENCE, Material.IRON_BARS, Material.OAK_FENCE_GATE
+            Material.ANDESITE_WALL, Material.COBBLESTONE_WALL, 
+            Material.DIORITE_WALL, Material.END_STONE_BRICK_WALL, Material.MOSSY_COBBLESTONE_WALL,
+            Material.MOSSY_STONE_BRICK_WALL, Material.NETHER_BRICK_WALL, Material.PRISMARINE_WALL, 
+            Material.RED_NETHER_BRICK_WALL, Material.RED_SANDSTONE_WALL, Material.SANDSTONE_WALL, Material.STONE_BRICK_WALL, Material.BRICK_WALL,
+            Material.GRANITE_WALL, Material.BLACKSTONE_WALL, Material.POLISHED_BLACKSTONE_WALL, Material.POLISHED_BLACKSTONE_BRICK_WALL
         };
     }
 
-    private List<Material> FriendlyList;
-
-    public StateCodec_Fence(){
-        FriendlyList=new ArrayList<Material>();
-        for (Material material : getApplicableMaterials()) {
-            FriendlyList.add(material);
-        }
-    }
-
-    private class FenceData implements Serializable {
+    private class WallData implements Serializable {
         /**
          *
          */
         private static final long serialVersionUID = 189543875L;
+        public boolean isUp;
         public List<String> ActiveFaces;
+        public List<String> heights;
 
         public String AsString(){
             StringBuilder sb = new StringBuilder();
             for (String face : ActiveFaces) {
                 sb.append("\nActive Face: "+face);
             }
+            sb.append("\nIs Up: "+isUp);
 
             return sb.toString();
         }
     }
+    
+    private List<Material> FriendlyList;
 
+    public StateCodec_Wall(){
+        FriendlyList=new ArrayList<Material>();
+        for (Material material : getApplicableMaterials()) {
+            FriendlyList.add(material);
+        }
+    }
+
+
+    
     @Override
     public String serialize(BlockState state) {
         if (FriendlyList.contains(state.getType())) {
 
-            Fence sig = (Fence)state.getBlockData();
-            
-            Set<BlockFace> fce = sig.getFaces();
+            Wall sig = (Wall)state.getBlockData();
 
+            BlockFace[] facess = new BlockFace[] {
+                BlockFace.NORTH, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH
+            };
             
             
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            FenceData dat = new FenceData();
+            WallData dat = new WallData();
             dat.ActiveFaces = new ArrayList<String>();
-            for (BlockFace blockFace : fce) {
+            dat.heights = new ArrayList<String>();
+            for (BlockFace blockFace : facess) {
                 dat.ActiveFaces.add(blockFace.name());
+                dat.heights.add(sig.getHeight(blockFace).name());
             }
+            dat.isUp = sig.isUp();
 
 
             try {
@@ -102,9 +113,9 @@ public class StateCodec_Fence implements BlockStateCodec, Serializable {
             if(FriendlyList.contains(state.getType())){
                 File TMP=null;
                 try {
-                    TMP = File.createTempFile("state", "debug_fence");
-                    NullConfig.GetTempConfig("fence_debug").set("state", state);
-                    NullConfig.SaveTempConfig(TMP, "fence_debug");
+                    TMP = File.createTempFile("state", "debug_wall");
+                    NullConfig.GetTempConfig("wall_debug").set("state", state);
+                    NullConfig.SaveTempConfig(TMP, "wall_debug");
                     FileReader FR = new FileReader(TMP);
                     BufferedReader br = new BufferedReader(FR);
                     String contents = "";
@@ -112,7 +123,7 @@ public class StateCodec_Fence implements BlockStateCodec, Serializable {
                     while((cur = br.readLine())!=null){
                         contents+=cur+"\n";
                     }
-                    Main.GetMainInstance().getLogger().info("ERROR\n\n: Below is the raw block data for fence\n\n"+contents);
+                    Main.GetMainInstance().getLogger().info("ERROR\n\n: Below is the raw block data for wall\n\n"+contents);
 
                     br.close();
                     FR.close();
@@ -127,18 +138,18 @@ public class StateCodec_Fence implements BlockStateCodec, Serializable {
 
     @Override
     public void deserialize(BlockState state, String conf) {
-        Main.GetMainInstance().getLogger().info("Deserialize orientable called");
+        Main.GetMainInstance().getLogger().info("Deserialize wall called");
         if(FriendlyList.contains(state.getType())){
-            Main.GetMainInstance().getLogger().info("Deserialize orientable called- is instanceof");
-            Fence dir = (Fence)state.getBlockData();
-            FenceData dat = new FenceData();
+            Main.GetMainInstance().getLogger().info("Deserialize wall called- is instanceof");
+            Wall dir = (Wall)state.getBlockData();
+            WallData dat = new WallData();
 
             ByteArrayInputStream bais = new ByteArrayInputStream(Base64Coder.decodeLines(conf));
             ObjectInputStream ois;
             try {
                 ois = new ObjectInputStream(bais);
 
-                dat = (FenceData)ois.readObject();
+                dat = (WallData)ois.readObject();
     
                 ois.close();
             } catch (IOException e1) {
@@ -152,8 +163,10 @@ public class StateCodec_Fence implements BlockStateCodec, Serializable {
             Main.GetMainInstance().getLogger().info("Deserialized!\n\n"+dat.AsString());
             if(conf != null) {
                 for (String face : dat.ActiveFaces) {
-                    dir.setFace(BlockFace.valueOf(face), true);
+                    //dir.setFace(BlockFace.valueOf(face), true);
+                    dir.setHeight(BlockFace.valueOf(face), Wall.Height.valueOf(dat.heights.get(dat.ActiveFaces.indexOf(face))));
                 }
+                dir.setUp(dat.isUp);
                 state.setBlockData(dir);
 
 
@@ -180,7 +193,6 @@ public class StateCodec_Fence implements BlockStateCodec, Serializable {
 
     @Override
     public String getID() {
-        return "Fence";
+        return "Wall";
     }
-    
 }

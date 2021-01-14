@@ -11,6 +11,12 @@
 		"java.configuration.updateBuildConfiguration": "automatic",
 		"java.codeGeneration.generateComments": true,
 		"java.maven.updateSnapshots": true,
-		"java.maven.downloadSources": true
+		"java.maven.downloadSources": true,
+		"files.exclude": {
+			"**/.classpath": true,
+			"**/.project": true,
+			"**/.settings": true,
+			"**/.factorypath": true
+		}
 	}
 }

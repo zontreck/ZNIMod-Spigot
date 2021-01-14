@@ -43,12 +43,9 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.context.Context;
 import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
-import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.configuration.file.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -128,7 +125,6 @@ public class Main extends JavaPlugin {
     public boolean hasLuckPerms = false;
     private boolean hasVault=false;
 
-    public Economy econ;
 
     public List<Location> stateRequests = new ArrayList<Location>();
     public Map<Location, BlockState> states = new HashMap<Location, BlockState>();
@@ -147,24 +143,15 @@ public class Main extends JavaPlugin {
         return inst;
     }
 
-    public boolean SetupEconomy(){
-        if(getServer().getPluginManager().getPlugin("Vault")==null){
-            return false;
-        }
-        RegisteredServiceProvider<Economy> econProvider = getServer().getServicesManager().getRegistration(Economy.class);
-        if(econProvider == null){
-            return false;
-        }else {
-            econ = econProvider.getProvider();
-            return econ!=null;
-        }
-
+    public static void SetMainInstance(Main instance){
+        inst=instance;
     }
+
 
     @Override
     public void onEnable() {
         ConfigurationSerialization.registerClass(RestoreBlock.class);
-        inst = this;
+        Main.SetMainInstance(this);
         getLogger().info("Hello spigot ZNIMod has arrived!");
         saveDefaultConfig();
 
@@ -177,12 +164,6 @@ public class Main extends JavaPlugin {
             hasLuckPerms=true;
         }
 
-        if(!SetupEconomy()){
-            getLogger().info("Soft Dependency vault not found");
-            hasVault=false;
-            //getServer().getPluginManager().disablePlugin(this);
-            //return;
-        }else hasVault=true;
 
         _playerVault = new PlayerVault();
         _otherPlayersVaults = new OtherPlayersVault();

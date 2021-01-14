@@ -14,7 +14,7 @@ import zeenai.server.NullConfig;
 import zeenai.server.antigrief.Healer;
 import zeenai.server.schematics.loader.compatibility.SchematicLoader;
 import zeenai.server.schematics.loader.compatibility.v1_15_2.SchematicLoader_v1_15_2;
-import zeenai.server.schematics.loader.compatibility.v1_16_4.SchematicLoader_v1_16_4;
+import zeenai.server.schematics.loader.compatibility.v1_16_4.SchematicLoader_v1_16_4;;
 import zeenai.server.treechops.RestoreBlock;
 
 public class LoadSchematic implements CommandExecutor {
@@ -65,7 +65,7 @@ public class LoadSchematic implements CommandExecutor {
                     SL = new SchematicLoader_v1_15_2();
                     break;
                 }
-                case "v1_16_R1":
+                case "v1_16_R3":
                 {
                     SL = new SchematicLoader_v1_16_4();
                     break;

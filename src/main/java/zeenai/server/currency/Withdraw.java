@@ -20,14 +20,15 @@ public class Withdraw implements CommandExecutor {
         FileConfiguration fc = PlayerCurrencyBoard.GetConfig((Player)sender);
         int Emeralds = Currency.GetReward(Material.EMERALD);
 
-        double BAL = Main.GetMainInstance().econ.getBalance((Player)sender);
+        double BAL = fc.getDouble("balance");
 
         int total = Integer.parseInt(args[0]); // number of emeralds to withdraw
         Emeralds = Emeralds*total;
         if(BAL>=Emeralds) {
             // Do withdraw
-            
-            Main.GetMainInstance().econ.withdrawPlayer((Player)sender, Emeralds);
+            fc.set("balance", BAL-Emeralds);
+            PlayerCurrencyBoard.SaveConfig((Player)sender);
+            //Main.GetMainInstance().econ.withdrawPlayer((Player)sender, Emeralds);
         }
         ItemStack is = new ItemStack(Material.EMERALD, total);
         

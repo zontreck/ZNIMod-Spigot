@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import zeenai.server.Main;
 import zeenai.server.currency.Currency;
+import zeenai.server.currency.PlayerCurrencyBoard;
 
 public class Repair implements CommandExecutor {
 
@@ -39,7 +40,7 @@ public class Repair implements CommandExecutor {
         double costOfEmeralds = Currency.GetReward(Material.EMERALD);
         price = 200*costOfEmeralds;
         Player p = (Player)sender;
-        double balance = Main.GetMainInstance().econ.getBalance(p);
+        double balance = PlayerCurrencyBoard.GetConfig(p).getDouble("balance");
         ItemStack i = p.getInventory().getItemInMainHand();
         ItemMeta metaValues = i.getItemMeta();
         Map<Enchantment,Integer> enchants = metaValues.getEnchants();
@@ -62,7 +63,11 @@ public class Repair implements CommandExecutor {
         }
 
         if(balance>=price){
-            Main.GetMainInstance().econ.withdrawPlayer(p, price);
+            //Main.GetMainInstance().econ.withdrawPlayer(p, price);
+            balance -=price;
+            PlayerCurrencyBoard.GetConfig(p).set("balance", balance);
+            PlayerCurrencyBoard.SaveConfig(p);
+
             p.sendMessage("["+ChatColor.RED+"Repair"+ChatColor.WHITE+"] You pay "+price+" to repair '"+i.getType().name()+"'");
         } else {
             p.sendMessage("You lack sufficient funds. Needed for repair: "+price);
@@ -71,7 +76,10 @@ public class Repair implements CommandExecutor {
         p.sendMessage("Repairing...");
         if(!i.getType().isItem()){
             p.sendMessage("This can only be used on items");
-            Main.GetMainInstance().econ.depositPlayer(p, price);
+            ///Main.GetMainInstance().econ.depositPlayer(p, price);
+            balance += price;
+            PlayerCurrencyBoard.GetConfig(p).set("balance", balance);
+            PlayerCurrencyBoard.SaveConfig(p);
             return true;
         }
         try{
@@ -84,14 +92,20 @@ public class Repair implements CommandExecutor {
                     p.sendMessage(ChatColor.RED+"Could not add enchantment '"+en.toString()+"' with a level of "+i.getEnchantments().get(en));
                     double refund = 75.0*costOfEmeralds;
                     p.sendMessage("You have been refunded: "+refund);
-                    Main.GetMainInstance().econ.depositPlayer(p, refund);
+                    balance += refund;
+                    PlayerCurrencyBoard.GetConfig(p).set("balance", balance);
+                    PlayerCurrencyBoard.SaveConfig(p);
+                    //Main.GetMainInstance().econ.depositPlayer(p, refund);
                 }
             }
             
             p.getInventory().setItemInMainHand(si);
             p.sendMessage("Repair completed!");
         }catch(Exception e){
-            Main.GetMainInstance().econ.depositPlayer(p, price);
+            balance += price;
+            PlayerCurrencyBoard.GetConfig(p).set("balance", balance);
+            PlayerCurrencyBoard.SaveConfig(p);
+            //Main.GetMainInstance().econ.depositPlayer(p, price);
             p.sendMessage("An error has occurred. You were not charged for repair");
             p.sendMessage(ChatColor.RED+e.getMessage());
         }

@@ -17,6 +17,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
@@ -45,12 +46,14 @@ public class SchematicWriter_v1_16_r3 implements SchematicWriter {
 
             Vector3 pos1 = (Vector3)fc.get("Pos1");
             Vector3 pos2 = (Vector3)fc.get("Pos2");
+            Map<Vector3, Entity> uniqueEntityMap = new HashMap<Vector3, Entity>();
 
             List<Vector3> cubed = pos1.Cube(pos2);
             List<RestoreBlock> schem = new ArrayList<RestoreBlock>();
             CurrentPlayer.sendMessage(ChatColor.AQUA+"Processing information for "+cubed.size()+" blocks");
             Main.GetMainInstance().getLogger().info("Processing information for "+cubed.size()+" blocks");
 
+            
             int CurBlock = 0;
             int Seq=0;
             while(cubed.size()!=0){
@@ -58,6 +61,16 @@ public class SchematicWriter_v1_16_r3 implements SchematicWriter {
                 RestoreBlock rb = new RestoreBlock();
                 Location L = vector3.GetBukkitLocation(CurrentPlayer.getWorld());
                 Block b = L.getBlock();
+                Entity[] ens = L.getChunk().getEntities();
+                for (Entity entity : ens) {
+                    if(!uniqueEntityMap.containsKey(entity.getLocation())){
+                        if(!cubed.contains(new Vector3(entity.getLocation())))
+                            uniqueEntityMap.put(new Vector3(entity.getLocation()), entity);
+                    }
+                }
+
+
+                
                 if(b.getType()==Material.AIR){
 
                     // Grab the properties IF the null config has a specific flag
@@ -128,6 +141,13 @@ public class SchematicWriter_v1_16_r3 implements SchematicWriter {
                 }
 
                 Main.GetMainInstance().getLogger().info("On block "+CurBlock+" of part "+Seq);
+            }
+
+            for (Entry<Vector3, Entity> ent:uniqueEntityMap.entrySet()) {
+                Main.GetMainInstance().getLogger().info("On Entity: "+ent.getKey().toString());
+                
+                // Entities can now be serialized
+                // Serialize entities to {schematic.entity}
             }
 
             if(schem.size()>0){

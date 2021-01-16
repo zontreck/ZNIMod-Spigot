@@ -61,11 +61,7 @@ public class StateCodec_Directional implements BlockStateCodec, Serializable {
                 Material.WITHER_SKELETON_WALL_SKULL,
                 Material.YELLOW_GLAZED_TERRACOTTA,
                 Material.ZOMBIE_WALL_HEAD,
-                Material.BARREL, Material.BLACK_WALL_BANNER, Material.BLUE_WALL_BANNER, Material.LIGHT_BLUE_WALL_BANNER,
-                Material.BROWN_WALL_BANNER, Material.CYAN_WALL_BANNER, Material.GRAY_WALL_BANNER, Material.GREEN_WALL_BANNER, 
-                Material.LIGHT_GRAY_WALL_BANNER, Material.LIME_WALL_BANNER, Material.MAGENTA_WALL_BANNER, Material.ORANGE_WALL_BANNER,
-                Material.PINK_WALL_BANNER, Material.PURPLE_WALL_BANNER, Material.RED_WALL_BANNER, Material.WHITE_WALL_BANNER,
-                Material.YELLOW_WALL_BANNER
+                Material.BARREL
 
         };
     }
@@ -79,7 +75,7 @@ public class StateCodec_Directional implements BlockStateCodec, Serializable {
         }
     }
 
-    private class DirectionalData implements Serializable {
+    class DirectionalData implements Serializable {
         /**
          *
          */

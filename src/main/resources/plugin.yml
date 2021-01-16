@@ -1,6 +1,6 @@
 main: zeenai.server.Main
 name: ZNIMod
-version: 1.1
+version: 1.2
 api-version: 1.16
 permissions:
   znimod.adminCommands:
@@ -285,3 +285,6 @@ commands:
   repair:
     description: Purchases a full repair of the tool in hand. This will not reset anvil repair counts
     usage: /repair
+  fillair:
+    description: Fills the cube area of pos1 and pos2
+    usage: /fillair

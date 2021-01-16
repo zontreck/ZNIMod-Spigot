@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 import zeenai.server.Main;
 import zeenai.server.NullConfig;
 import zeenai.server.antigrief.Healer;
-import zeenai.server.blockcodec.BlockStateCodecs;
 import zeenai.server.schematics.loader.compatibility.SchematicLoader;
 import zeenai.server.schematics.writer.Vector3;
 import zeenai.server.treechops.RestoreBlock;
@@ -78,7 +77,7 @@ public class SchematicLoader_v1_16_4 implements SchematicLoader {
                     for (RestoreBlock restoreBlock : lRB) {
                         if(restoreBlock.mat==Material.AIR && NullConfig.GetTempConfig(CurrentSender.getName()).getBoolean("IncludeAir")==false && NullConfig.GetTempConfig(CurrentSender.getName()).getBoolean("SetToAir")==false) continue;
                         Block currentBlock = restoreBlock.loc.getBlock();
-                        if(currentBlock.getType().name() == restoreBlock.mat.name() &&!RemoveSchematic && !restoreBlock.HasState())continue;
+                        if(currentBlock.getType().name().equals(restoreBlock.mat.name()) &&!RemoveSchematic && !restoreBlock.HasState())continue;
                         
                         Vector3 relative = new Vector3(restoreBlock.loc.getX(), restoreBlock.loc.getY(), restoreBlock.loc.getZ());
                         Vector3 absolute = relative.Add(PlayerPosition);

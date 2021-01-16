@@ -31,11 +31,8 @@ public class StateCodec_Rotatable implements BlockStateCodec, Serializable {
     @Override
     public Material[] getApplicableMaterials() {
         return new Material[] { 
-            Material.BLACK_BANNER, Material.BLACK_BED, Material.BLUE_BANNER, Material.BROWN_BANNER, Material.CREEPER_HEAD, Material.CYAN_BANNER,
-            Material.DRAGON_HEAD, Material.GRAY_BANNER, Material.GREEN_BANNER, Material.LIGHT_BLUE_BANNER,
-            Material.LIGHT_GRAY_BANNER, Material.LIME_BANNER, Material.MAGENTA_BANNER, Material.ORANGE_BANNER,
-            Material.PINK_BANNER, Material.PLAYER_HEAD, Material.PURPLE_BANNER, Material.RED_BANNER, Material.SKELETON_SKULL,
-            Material.WHITE_BANNER, Material.WITHER_SKELETON_SKULL, Material.YELLOW_BANNER, Material.ZOMBIE_HEAD
+            Material.ZOMBIE_HEAD, 
+            Material.BLACK_BED,Material.CREEPER_HEAD,Material.DRAGON_HEAD,Material.PLAYER_HEAD, Material.WITHER_SKELETON_SKULL
         };
     }
 
@@ -48,7 +45,7 @@ public class StateCodec_Rotatable implements BlockStateCodec, Serializable {
         }
     }
 
-    private class RotatableData implements Serializable {
+    class RotatableData implements Serializable {
         /**
          *
          */

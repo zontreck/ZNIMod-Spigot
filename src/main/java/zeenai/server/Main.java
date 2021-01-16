@@ -59,6 +59,7 @@ import zeenai.server.notepad.DeleteNote;
 import zeenai.server.notepad.GetNote;
 import zeenai.server.notepad.Notes;
 import zeenai.server.notepad.SetNote;
+import zeenai.server.schematics.FillAir;
 import zeenai.server.schematics.GetPos;
 import zeenai.server.schematics.LoadSchematic;
 import zeenai.server.schematics.POS1;
@@ -124,6 +125,8 @@ public class Main extends JavaPlugin {
     public LuckPerms luckPerms = null;
     public boolean hasLuckPerms = false;
     private boolean hasVault=false;
+
+    private FillAir _fillair = new FillAir();
 
 
     public List<Location> stateRequests = new ArrayList<Location>();
@@ -243,6 +246,7 @@ public class Main extends JavaPlugin {
         getCommand("applyprefix").setExecutor(new ApplyPrefix());
         getCommand("repair").setExecutor(new Repair());
         getCommand("setautostock").setExecutor(new SetAutoStock());
+        getCommand("fillair").setExecutor(_fillair);
 
 
 

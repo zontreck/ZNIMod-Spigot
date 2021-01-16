@@ -8,7 +8,7 @@ import org.bukkit.World;
 
 import zeenai.server.Main;
 
-public class Vector3 {
+public class Vector3 implements Comparable{
     double x, y, z;
 
     public double getX() {
@@ -23,12 +23,18 @@ public class Vector3 {
         return z;
     }
 
+    public Vector3(Location x){
+        this.x = x.getX();
+        this.y=x.getY();
+        this.z=x.getZ();
+    }
+
     public Vector3(double x, double y, double z) {
         this.x = Math.round(x);
         this.y = Math.round(y);
         this.z = Math.round(z);
 
-        Main.GetMainInstance().getLogger().info(ToString());
+        //Main.GetMainInstance().getLogger().info(ToString());
     }
 
     public Vector3() {
@@ -187,6 +193,17 @@ public class Vector3 {
             }
         }
         return positions;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Vector3){
+            Vector3 v3 = (Vector3)o;
+            if(Less(v3))return -1;
+            if(Same(v3))return 0;
+            if(Greater(v3))return 1;
+        }
+        return -2;
     }
     
 }

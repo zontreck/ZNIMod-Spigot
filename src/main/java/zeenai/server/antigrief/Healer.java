@@ -76,8 +76,8 @@ public class Healer implements Runnable
     }
 
     public void Heal(){
-        for (int i = 0; i < 2000; i++) {
-            // Restore 2000 blocks in a single batch
+        for (int i = 0; i < 1000; i++) {
+            // Restore 1000 blocks in a single batch
             if(Pass!=2) run();
         }
     }
@@ -86,8 +86,8 @@ public class Healer implements Runnable
         FileConfiguration fc = AntiGrief.GetConfig();
         int Seconds=0;
         if(!fc.contains("antigrief.millisecBetween")){
-            fc.set("antigrief.millisecBetween",5000);
-            Seconds=5000;
+            fc.set("antigrief.millisecBetween",500);
+            Seconds=500;
             AntiGrief.SaveConfig();
         } else {
             Seconds=fc.getInt("antigrief.millisecBetween");

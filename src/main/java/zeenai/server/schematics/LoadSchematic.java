@@ -40,6 +40,7 @@ public class LoadSchematic implements CommandExecutor {
         }
         if(!NullConfig.GetTempConfig(sender.getName()).contains("IncludeAir"))NullConfig.GetTempConfig(sender.getName()).set("IncludeAir",true);
         
+        
         try{
 
             File f = new File(Main.GetMainInstance().getDataFolder()+"/schematics", schemName+".0.schem3");
@@ -79,7 +80,7 @@ public class LoadSchematic implements CommandExecutor {
             SL.LoadSchematic(f);
             sender.sendMessage("Preparing to modify "+SL.GetBlockCount()+" blocks");
             
-            List<RestoreBlock> RB = SL.GetBlocks();
+            //List<RestoreBlock> RB = SL.GetBlocks();
             // Get current block list and set the backup list!
             Healer.GetInstance().backupMap.clear();
             sender.sendMessage("Backing up current blocks..");

@@ -54,6 +54,7 @@ import zeenai.server.chunkforceloader.*;
 import zeenai.server.colormagic.*;
 import zeenai.server.commands.*;
 import zeenai.server.currency.*;
+import zeenai.server.entitycodec.RestoreEntity;
 import zeenai.server.generators.zni.ZniGenerator;
 import zeenai.server.notepad.DeleteNote;
 import zeenai.server.notepad.GetNote;
@@ -68,6 +69,7 @@ import zeenai.server.schematics.PositionDebug;
 import zeenai.server.schematics.SetOrigin;
 import zeenai.server.schematics.Unimport;
 import zeenai.server.schematics.WriteSchematic;
+import zeenai.server.schematics.writer.Vector3;
 import zeenai.server.treechops.RestoreBlock;
 import zeenai.server.treechops.TreeFeller;
 import zeenai.server.treechops.Undo;
@@ -154,6 +156,8 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         ConfigurationSerialization.registerClass(RestoreBlock.class);
+        ConfigurationSerialization.registerClass(RestoreEntity.class);
+        ConfigurationSerialization.registerClass(Vector3.class);
         Main.SetMainInstance(this);
         getLogger().info("Hello spigot ZNIMod has arrived!");
         saveDefaultConfig();

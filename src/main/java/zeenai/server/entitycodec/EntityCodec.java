@@ -1,12 +1,12 @@
 package zeenai.server.entitycodec;
 
 import org.bukkit.Material;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 public interface EntityCodec
 {
-    Material[] getApplicableMaterials();
+    EntityType[] getApplicableEntities();
 
     String serialize(Entity state);
 

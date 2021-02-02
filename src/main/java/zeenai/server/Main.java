@@ -310,19 +310,14 @@ public class Main extends JavaPlugin {
                                 // This is a autostock chest!
                                 // Read the item and refill the chest completely now
                                 //getLogger().info("On Sect: "+eString+"."+xString+"."+yString+"."+zString);
-                                ItemStack itm = new ItemStack(Material.valueOf(fc.getString(eString+"."+xString+"."+yString+"."+zString+".item")));
-                                itm.setAmount(Integer.parseInt(fc.getString(eString+"."+xString+"."+yString+"."+zString+".amount")));
 
                                 Vector3 vec3 = new Vector3(Double.parseDouble(xString), Double.parseDouble(yString), Double.parseDouble(zString));
                                 vec3.worldName=eString;
                                 Location bkLoc = vec3.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(eString));
                                 Block b = bkLoc.getBlock();
-                                
-                                if(itm==null){
-                                    //getLogger().info("DESERIALIZE FAILED FOR ITEM STACK");
-                                }else{
-                                    //getLogger().info("Deserialized item stack: "+itm.getType()+" *"+itm.getAmount());
-                                }
+
+                                ItemStack itm = new ItemStack(Material.valueOf(fc.getString(eString+"."+xString+"."+yString+"."+zString+".item")));
+                                itm.setAmount(Integer.parseInt(fc.getString(eString+"."+xString+"."+yString+"."+zString+".amount")));
                                 if(b.getState() instanceof Chest){
                                     
                                     Chest con = (Chest)b.getState();
@@ -345,6 +340,8 @@ public class Main extends JavaPlugin {
                                         }
                                     }
                                     for(int i=count;i<con.getInventory().getSize();i++){
+                                        itm = new ItemStack(Material.valueOf(fc.getString(eString+"."+xString+"."+yString+"."+zString+".item")));
+                                        itm.setAmount(Integer.parseInt(fc.getString(eString+"."+xString+"."+yString+"."+zString+".amount")));
                                         con.getInventory().addItem(itm);
                                     }
 

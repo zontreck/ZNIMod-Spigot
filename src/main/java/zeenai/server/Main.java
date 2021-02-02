@@ -320,20 +320,20 @@ public class Main extends JavaPlugin {
                                 if(b.getState() instanceof Chest){
                                     
                                     Chest con = (Chest)b.getState();
-                                    Inventory inv = con.getBlockInventory();
-                                    getLogger().info("Slot count: "+inv.getSize());
+                                    ItemStack[] inv = con.getInventory().getContents();
+                                    getLogger().info("Slot count: "+inv.length);
                                     int count=0;
                                     for (ItemStack itemStack : inv) {
                                         if(itemStack.getType()==itm.getType()){
                                             count++;
                                         }else{
                                             if(itemStack.getType()!=Material.AIR){
-                                                inv.remove(itemStack);
+                                                con.getInventory().remove(itemStack);
                                             }
                                         }
                                     }
-                                    for(int i=count;i<inv.getSize();i++){
-                                        inv.addItem(itm);
+                                    for(int i=count;i<con.getInventory().getSize();i++){
+                                        con.getInventory().addItem(itm);
                                     }
 
                                 } else {

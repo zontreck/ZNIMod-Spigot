@@ -317,6 +317,9 @@ public class Main extends JavaPlugin {
                                 Location bkLoc = vec3.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(eString));
                                 Block b = bkLoc.getBlock();
                                 
+                                if(itm==null){
+                                    getLogger().info("DESERIALIZE FAILED FOR ITEM STACK");
+                                }
                                 if(b.getState() instanceof Chest){
                                     
                                     Chest con = (Chest)b.getState();
@@ -324,6 +327,8 @@ public class Main extends JavaPlugin {
                                     getLogger().info("Slot count: "+inv.length);
                                     int count=0;
                                     for (ItemStack itemStack : inv) {
+                                        
+                                        getLogger().info("Checking if "+itemStack.getType()+" is equal to "+itm.getType());
                                         if(itemStack.getType()==itm.getType()){
                                             count++;
                                         }else{

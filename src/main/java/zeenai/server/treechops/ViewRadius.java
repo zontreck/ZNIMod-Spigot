@@ -15,8 +15,6 @@ import org.bukkit.entity.Player;
 import zeenai.server.Main;
 import zeenai.server.PlayerConfig;
 
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.util.collection.BlockMap;
 
 public class ViewRadius implements CommandExecutor {
 

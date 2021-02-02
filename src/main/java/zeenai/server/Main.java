@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.ObjectInputFilter.Config;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -28,7 +29,10 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
+import org.bukkit.block.data.type.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.Inventory;
@@ -42,11 +46,9 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.context.ImmutableContextSet;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
+import net.minecraft.server.v1_16_R3.EntityFox.i;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
@@ -86,6 +88,7 @@ import zeenai.server.antigrief.RestoreBackup;
 import zeenai.server.antigrief.StartPhase2;
 import zeenai.server.autocraft.ZAutoCraft;
 import zeenai.server.autostock.SetAutoStock;
+import zeenai.server.autostock.StockConfig;
 import zeenai.server.biomewatchdog.*;
 
 public class Main extends JavaPlugin {
@@ -124,9 +127,6 @@ public class Main extends JavaPlugin {
     public Map<String, FileConfiguration> CustomConfigs = new HashMap<>();
     public Map<String, Biome> BiomesMap = new HashMap<>();
     public Map<String, Scoreboard> boards = new HashMap<String, Scoreboard>();
-    public LuckPerms luckPerms = null;
-    public boolean hasLuckPerms = false;
-    private boolean hasVault=false;
 
     private FillAir _fillair = new FillAir();
 
@@ -163,13 +163,6 @@ public class Main extends JavaPlugin {
         saveDefaultConfig();
 
 
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if(provider==null){
-            hasLuckPerms=false;
-        }else{
-            luckPerms=provider.getProvider();
-            hasLuckPerms=true;
-        }
 
 
         _playerVault = new PlayerVault();
@@ -267,6 +260,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ZAutoCraft(), this);
         getServer().getPluginManager().registerEvents(new EnforceGameMode(), this);
 
+        getServer().getPluginManager().registerEvents(new SetAutoStock(), this);
+
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable(){
             @Override
             public void run(){
@@ -290,61 +285,48 @@ public class Main extends JavaPlugin {
             }
         }, 0L, 150L);
 
-        if(hasLuckPerms){
 
-            getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable(){
-        
-                @Override
-                public void run() {
-                    // Scan player permissions, and assemble the prefix registry
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        User us = luckPerms.getUserManager().getUser(player.getName());
-                        //getLogger().info("Checking user: "+player.getName()+"; NodeCount: "+us.getNodes().size());
-                        for (Node nod : us.getNodes()) {
-                            //getLogger().info("User: "+player.getName()+"; Node: "+nod.getKey());
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable(){
 
-
-
-                            if(nod.getKey().startsWith("displayname")){
-                                //getLogger().info("Discover Node : "+nod.getKey());
-                                if(Main.GetMainInstance().displayNames.containsKey(player.getName())){
-                                    DisplayNameRegistry DNR = Main.GetMainInstance().displayNames.get(player.getName());
-                                    ImmutableContextSet ics = nod.getContexts();
-                                    Set<String> lbl = ics.getValues("label");
-                                    Set<String> col = ics.getValues("color");
-                                    
-                                    String label = "";
-                                    for (String string : lbl) {
-                                        label=string;
-                                        break;
-                                    }
-                                    //getLogger().info("Label Discover : "+label);
-                                    if(DNR.internal.containsKey(label)){
-                                        // ignore
-                                    }else{
-                                        ChatColor color = ChatColor.RED;
-                                        for(String string : col){
-                                            color = ChatColor.valueOf( string.toUpperCase() );
-                                            break;
-                                        }
-
-                                        DNR.internal.put(label, color);
-                                        Main.GetMainInstance().displayNames.remove(player.getName());
-                                        Main.GetMainInstance().displayNames.put(player.getName(), DNR);
-                                    }
-
-                                } else {
-                                    getLogger().info("No catalog for "+player.getName());
-                                    Main.GetMainInstance().displayNames.put(player.getName(), new DisplayNameRegistry());
+            @Override
+            public void run() {
+                // retrieve the StockConfig
+                FileConfiguration fc = StockConfig.GetConfig();
+                Map<String, Object> elements = fc.getValues(false);
+                for (String eString : elements.keySet()) {
+                    // now parse X in each world
+                    ConfigurationSection sect = fc.getConfigurationSection(eString);
+                    for (String xString : sect.getKeys(false)) {
+                        // now parse Y
+                        ConfigurationSection sectY = sect.getConfigurationSection(xString);
+                        for (String yString : sectY.getKeys(false)) {
+                            // now parse Z
+                            ConfigurationSection sectZ = sect.getConfigurationSection(yString);
+                            // we now have the ability to retrieve the values for the autostock
+                            // foreach Z is a autostock
+                            for (String zString : sectZ.getKeys(false)) {
+                                // This is a autostock chest!
+                                // Read the item and refill the chest completely now
+                                ItemStack itm = fc.getItemStack(eString+"."+xString+"."+yString+"."+zString);
+                                Vector3 vec3 = new Vector3(Double.parseDouble(xString), Double.parseDouble(yString), Double.parseDouble(zString));
+                                vec3.worldName=eString;
+                                Location bkLoc = vec3.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(eString));
+                                Block b = bkLoc.getBlock();
+                                
+                                Container con = (Container)b.getState();
+                                for(int i=0;i<con.getInventory().getSize();i++){
+                                    if(con.getInventory().getItem(i).getType()==itm.getType())continue;// Don't spam the server with refill requests or update NBT when its not needed yet.
+                                    con.getInventory().setItem(i, itm);
                                 }
                             }
                         }
                     }
                 }
-            }, 0L, 50L);
-        } else {
-            getLogger().info("LuckPerms not found");
-        }
+
+            }
+
+        }, 0L, 1200L);
+
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable(){
         

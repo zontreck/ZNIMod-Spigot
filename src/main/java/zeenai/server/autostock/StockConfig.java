@@ -12,7 +12,7 @@ import zeenai.server.Main;
 public class StockConfig
 {
     
-    public static FileConfiguration GetConfig(Player play) {
+    public static FileConfiguration GetConfig() {
         if(Main.GetMainInstance().CustomConfigs.containsKey("config_stocks")){
             return Main.GetMainInstance().CustomConfigs.get("config_stocks");
         }else {
@@ -23,7 +23,7 @@ public class StockConfig
         }
     }
 
-    public static void SaveConfig(Player play) {
+    public static void SaveConfig() {
         try {
             Main.GetMainInstance().CustomConfigs.get("config_stocks").save(new File(Main.GetMainInstance().getDataFolder()+"/", "stocks.yml"));
         } catch (IOException e) {

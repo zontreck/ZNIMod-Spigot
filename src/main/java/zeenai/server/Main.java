@@ -319,6 +319,8 @@ public class Main extends JavaPlugin {
                                 
                                 if(itm==null){
                                     getLogger().info("DESERIALIZE FAILED FOR ITEM STACK");
+                                }else{
+                                    getLogger().info("Deserialized item stack: "+itm.getType()+" *"+itm.getAmount());
                                 }
                                 if(b.getState() instanceof Chest){
                                     
@@ -328,7 +330,7 @@ public class Main extends JavaPlugin {
                                     int count=0;
                                     for (ItemStack itemStack : inv) {
                                         
-                                        getLogger().info("Checking if "+itemStack.getType()+" is equal to "+itm.getType());
+                                        getLogger().info("COMPARE: "+itemStack.getType());
                                         if(itemStack.getType()==itm.getType()){
                                             count++;
                                         }else{

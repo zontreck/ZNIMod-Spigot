@@ -81,7 +81,7 @@ public class SetAutoStock implements CommandExecutor, Listener {
                         fc.set("autostock.item",null);
 
                         fc = StockConfig.GetConfig();
-                        fc.set(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z+".item", itm);
+                        fc.set(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z+".item", itm.getType().name());
                         fc.set(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z+".amount", itm.getAmount());
                         StockConfig.SaveConfig();
 

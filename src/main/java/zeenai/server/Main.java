@@ -310,7 +310,7 @@ public class Main extends JavaPlugin {
                                 // This is a autostock chest!
                                 // Read the item and refill the chest completely now
                                 //getLogger().info("On Sect: "+eString+"."+xString+"."+yString+"."+zString);
-                                ItemStack itm = fc.getItemStack(eString+"."+xString+"."+yString+"."+zString+".item");
+                                ItemStack itm = new ItemStack(Material.valueOf(fc.getString(eString+"."+xString+"."+yString+"."+zString+".item")));
                                 itm.setAmount(Integer.parseInt(fc.getString(eString+"."+xString+"."+yString+"."+zString+".amount")));
 
                                 Vector3 vec3 = new Vector3(Double.parseDouble(xString), Double.parseDouble(yString), Double.parseDouble(zString));

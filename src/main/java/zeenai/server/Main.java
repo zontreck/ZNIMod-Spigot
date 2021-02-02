@@ -317,7 +317,7 @@ public class Main extends JavaPlugin {
                                 Location bkLoc = vec3.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(eString));
                                 Block b = bkLoc.getBlock();
                                 
-                                if(b instanceof Chest){
+                                if(b.getState() instanceof Container){
                                     
                                     Container con = (Container)b.getState();
                                     for(int i=0;i<con.getInventory().getSize();i++){
@@ -326,18 +326,8 @@ public class Main extends JavaPlugin {
                                         inv.setItem(i, itm);
                                     }
 
-                                } else if(b instanceof Container){
-
-                                    Container con = (Container)b;
-                                    for(int i=0;i<con.getInventory().getSize();i++){
-                                        Inventory inv = con.getInventory();
-                                        if(inv.getItem(i).getType()==itm.getType())continue;
-                                        inv.setItem(i, itm);
-                                        
-                                    }
-
                                 } else {
-                                    getLogger().info(("Unknown block! "+vec3));
+                                    getLogger().info(("Unknown block! "+vec3.ToString()));
                                 }
                                 
                             }

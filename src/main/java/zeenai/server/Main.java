@@ -294,46 +294,49 @@ public class Main extends JavaPlugin {
                 Map<String, Object> elements = fc.getValues(false);
                 for (String eString : elements.keySet()) {
                     // now parse X in each world
-                    getLogger().info("On Sect: "+eString);
+                    //getLogger().info("On Sect: "+eString);
                     ConfigurationSection sect = fc.getConfigurationSection(eString);
                     for (String xString : sect.getKeys(false)) {
                         // now parse Y
-                        getLogger().info("On Sect: "+eString+"."+xString);
+                        //getLogger().info("On Sect: "+eString+"."+xString);
                         ConfigurationSection sectY = sect.getConfigurationSection(xString);
                         for (String yString : sectY.getKeys(false)) {
                             // now parse Z
-                            getLogger().info("On Sect: "+eString+"."+xString+"."+yString);
+                            //getLogger().info("On Sect: "+eString+"."+xString+"."+yString);
                             ConfigurationSection sectZ = sectY.getConfigurationSection(yString);
                             // we now have the ability to retrieve the values for the autostock
                             // foreach Z is a autostock
                             for (String zString : sectZ.getKeys(false)) {
                                 // This is a autostock chest!
                                 // Read the item and refill the chest completely now
-                                getLogger().info("On Sect: "+eString+"."+xString+"."+yString+"."+zString);
-                                ItemStack itm = fc.getItemStack(eString+"."+xString+"."+yString+"."+zString);
+                                //getLogger().info("On Sect: "+eString+"."+xString+"."+yString+"."+zString);
+                                ItemStack itm = fc.getItemStack(eString+"."+xString+"."+yString+"."+zString+".item");
+                                itm.setAmount(Integer.parseInt(fc.getString(eString+"."+xString+"."+yString+"."+zString+".amount")));
+
                                 Vector3 vec3 = new Vector3(Double.parseDouble(xString), Double.parseDouble(yString), Double.parseDouble(zString));
                                 vec3.worldName=eString;
                                 Location bkLoc = vec3.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(eString));
                                 Block b = bkLoc.getBlock();
                                 
                                 if(itm==null){
-                                    getLogger().info("DESERIALIZE FAILED FOR ITEM STACK");
+                                    //getLogger().info("DESERIALIZE FAILED FOR ITEM STACK");
                                 }else{
-                                    getLogger().info("Deserialized item stack: "+itm.getType()+" *"+itm.getAmount());
+                                    //getLogger().info("Deserialized item stack: "+itm.getType()+" *"+itm.getAmount());
                                 }
                                 if(b.getState() instanceof Chest){
                                     
                                     Chest con = (Chest)b.getState();
                                     ItemStack[] inv = con.getInventory().getContents();
-                                    getLogger().info("Slot count: "+inv.length);
+                                    //getLogger().info("Slot count: "+inv.length);
                                     int count=0;
                                     if(inv==null){
-                                        getLogger().info("INV is null");
+                                        //getLogger().info("INV is null");
+                                        break;
                                     }
                                     for (ItemStack itemStack : inv) {
                                         if(itemStack==null)continue;
                                         if(itemStack.getType()==itm.getType()){
-                                            getLogger().info("COMPARE: "+itemStack.getType());
+                                            //getLogger().info("COMPARE: "+itemStack.getType());
                                             count++;
                                         }else{
                                             if(itemStack.getType()!=Material.AIR){

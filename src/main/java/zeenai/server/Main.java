@@ -317,13 +317,23 @@ public class Main extends JavaPlugin {
                                 Location bkLoc = vec3.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(eString));
                                 Block b = bkLoc.getBlock();
                                 
-                                if(b.getState() instanceof Container){
+                                if(b.getState() instanceof Chest){
                                     
-                                    Container con = (Container)b.getState();
-                                    for(int i=0;i<con.getInventory().getSize();i++){
-                                        Inventory inv = con.getInventory();
-                                        if(inv.getItem(i).getType()==itm.getType())continue;// Don't spam the server with refill requests or update NBT when its not needed yet.
-                                        inv.setItem(i, itm);
+                                    Chest con = (Chest)b.getState();
+                                    Inventory inv = con.getBlockInventory();
+                                    getLogger().info("Slot count: "+inv.getSize());
+                                    int count=0;
+                                    for (ItemStack itemStack : inv) {
+                                        if(itemStack.getType()==itm.getType()){
+                                            count++;
+                                        }else{
+                                            if(itemStack.getType()!=Material.AIR){
+                                                inv.remove(itemStack);
+                                            }
+                                        }
+                                    }
+                                    for(int i=count;i<inv.getSize();i++){
+                                        inv.addItem(itm);
                                     }
 
                                 } else {

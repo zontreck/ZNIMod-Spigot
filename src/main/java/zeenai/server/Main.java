@@ -319,7 +319,7 @@ public class Main extends JavaPlugin {
                                 
                                 if(b instanceof Chest){
                                     
-                                    Chest con = (Chest)b;
+                                    Container con = (Container)b.getState();
                                     for(int i=0;i<con.getInventory().getSize();i++){
                                         Inventory inv = con.getInventory();
                                         if(inv.getItem(i).getType()==itm.getType())continue;// Don't spam the server with refill requests or update NBT when its not needed yet.
@@ -333,8 +333,11 @@ public class Main extends JavaPlugin {
                                         Inventory inv = con.getInventory();
                                         if(inv.getItem(i).getType()==itm.getType())continue;
                                         inv.setItem(i, itm);
+                                        
                                     }
 
+                                } else {
+                                    getLogger().info(("Unknown block! "+vec3));
                                 }
                                 
                             }

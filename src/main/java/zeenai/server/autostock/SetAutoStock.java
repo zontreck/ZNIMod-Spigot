@@ -81,7 +81,7 @@ public class SetAutoStock implements CommandExecutor, Listener {
                         fc.set("autostock.item",null);
 
                         fc = StockConfig.GetConfig();
-                        fc.set(pos.worldName+"."+Integer.parseInt(Double.toString(pos.x))+"."+Integer.parseInt(Double.toString(pos.y))+"."+Integer.parseInt(Double.toString(pos.z)), itm);
+                        fc.set(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z, itm);
                         StockConfig.SaveConfig();
 
                         pie.setCancelled(true);
@@ -98,13 +98,13 @@ public class SetAutoStock implements CommandExecutor, Listener {
         Vector3 pos = new Vector3(bbe.getBlock().getLocation());
         pos.LosePrecision();
         pos.worldName=bbe.getBlock().getLocation().getWorld().getName();
-        if(sc.contains(pos.worldName+"."+Integer.parseInt(Double.toString(pos.x))+"."+Integer.parseInt(Double.toString(pos.y))+"."+Integer.parseInt(Double.toString(pos.z)))){
+        if(sc.contains(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z)){
             // disallow if not op
             Player p = bbe.getPlayer();
             if(p.hasPermission("znimod.opCommands")){
                 // Remove from configuration
                 
-                sc.set(pos.worldName+"."+Integer.parseInt(Double.toString(pos.x))+"."+Integer.parseInt(Double.toString(pos.y))+"."+Integer.parseInt(Double.toString(pos.z)), null);
+                sc.set(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z, null);
                 StockConfig.SaveConfig();
             }else{
                 bbe.setCancelled(true);

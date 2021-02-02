@@ -304,7 +304,7 @@ public class Main extends JavaPlugin {
                         for (String yString : sectY.getKeys(false)) {
                             // now parse Z
                             getLogger().info("On Sect: "+eString+"."+xString+"."+yString);
-                            ConfigurationSection sectZ = sect.getConfigurationSection(yString);
+                            ConfigurationSection sectZ = sectY.getConfigurationSection(yString);
                             // we now have the ability to retrieve the values for the autostock
                             // foreach Z is a autostock
                             for (String zString : sectZ.getKeys(false)) {

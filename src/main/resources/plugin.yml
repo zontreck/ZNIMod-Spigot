@@ -26,7 +26,7 @@ permissions:
 commands:
   setautostock:
     description: Set automatic stock
-    usage: /setautostock [slotNumber] [MaterialName] [Quantity]
+    usage: /setautostock
     permissions: "znimod.opCommands"
   sethome:
     description: Sets home to your current location

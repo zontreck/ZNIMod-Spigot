@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -44,19 +46,19 @@ public class SetAutoStock implements CommandExecutor, Listener {
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent ice){
-        Inventory finalInv = ice.getInventory();
-        // First get nullconf
-        FileConfiguration fc = NullConfig.GetConfig((Player)(ice.getPlayer()));
+    public void onInventoryClick(InventoryClickEvent ice){
+        ItemStack its = ice.getCurrentItem();
+        Player p = (Player)ice.getWhoClicked();
+        FileConfiguration fc = NullConfig.GetConfig(p);
         if(fc.getBoolean("autostock.inProgress")){
-            int stage = fc.getInt("autostock.stage");
+            int stage=fc.getInt("autostock.stage");
             if(stage==1){
-                // Process and retrieve inventory stack on slot 0
-                ItemStack item0 = finalInv.getContents()[0];
                 stage++;
-                fc.set("autostock.stage", stage);
-                fc.set("autostock.item", item0);
-                ice.getPlayer().sendMessage(ChatColor.RED+"Open the chest you want to associate now");
+                fc.set("autostock.stage",stage);
+                fc.set("autostock.item", its);
+                ice.setCancelled(true);
+                ice.getWhoClicked().closeInventory();
+                ice.getWhoClicked().sendMessage(ChatColor.RED+"Open the chest you want to associate now : Item("+its.getType()+")");
             }
         }
     }
@@ -79,7 +81,7 @@ public class SetAutoStock implements CommandExecutor, Listener {
                         fc.set("autostock.item",null);
 
                         fc = StockConfig.GetConfig();
-                        fc.set(pos.worldName+"."+pos.x+"."+pos.y+"."+pos.z, itm);
+                        fc.set(pos.worldName+"."+Integer.parseInt(Double.toString(pos.x))+"."+Integer.parseInt(Double.toString(pos.y))+"."+Integer.parseInt(Double.toString(pos.z)), itm);
                         StockConfig.SaveConfig();
 
                         pie.setCancelled(true);
@@ -96,12 +98,13 @@ public class SetAutoStock implements CommandExecutor, Listener {
         Vector3 pos = new Vector3(bbe.getBlock().getLocation());
         pos.LosePrecision();
         pos.worldName=bbe.getBlock().getLocation().getWorld().getName();
-        if(sc.contains(pos.worldName+"."+pos.x+"."+pos.y+"."+pos.z)){
+        if(sc.contains(pos.worldName+"."+Integer.parseInt(Double.toString(pos.x))+"."+Integer.parseInt(Double.toString(pos.y))+"."+Integer.parseInt(Double.toString(pos.z)))){
             // disallow if not op
             Player p = bbe.getPlayer();
             if(p.hasPermission("znimod.opCommands")){
                 // Remove from configuration
-                sc.set(pos.worldName+"."+pos.x+"."+pos.y+"."+pos.z, null);
+                
+                sc.set(pos.worldName+"."+Integer.parseInt(Double.toString(pos.x))+"."+Integer.parseInt(Double.toString(pos.y))+"."+Integer.parseInt(Double.toString(pos.z)), null);
                 StockConfig.SaveConfig();
             }else{
                 bbe.setCancelled(true);

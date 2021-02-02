@@ -295,18 +295,22 @@ public class Main extends JavaPlugin {
                 Map<String, Object> elements = fc.getValues(false);
                 for (String eString : elements.keySet()) {
                     // now parse X in each world
+                    getLogger().info("On Sect: "+eString);
                     ConfigurationSection sect = fc.getConfigurationSection(eString);
                     for (String xString : sect.getKeys(false)) {
                         // now parse Y
+                        getLogger().info("On Sect: "+eString+"."+xString);
                         ConfigurationSection sectY = sect.getConfigurationSection(xString);
                         for (String yString : sectY.getKeys(false)) {
                             // now parse Z
+                            getLogger().info("On Sect: "+eString+"."+xString+"."+yString);
                             ConfigurationSection sectZ = sect.getConfigurationSection(yString);
                             // we now have the ability to retrieve the values for the autostock
                             // foreach Z is a autostock
                             for (String zString : sectZ.getKeys(false)) {
                                 // This is a autostock chest!
                                 // Read the item and refill the chest completely now
+                                getLogger().info("On Sect: "+eString+"."+xString+"."+yString+"."+zString);
                                 ItemStack itm = fc.getItemStack(eString+"."+xString+"."+yString+"."+zString);
                                 Vector3 vec3 = new Vector3(Double.parseDouble(xString), Double.parseDouble(yString), Double.parseDouble(zString));
                                 vec3.worldName=eString;

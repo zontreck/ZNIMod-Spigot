@@ -331,9 +331,9 @@ public class Main extends JavaPlugin {
                                         getLogger().info("INV is null");
                                     }
                                     for (ItemStack itemStack : inv) {
-                                        
-                                        getLogger().info("COMPARE: "+itemStack.getType());
+                                        if(itemStack==null)continue;
                                         if(itemStack.getType()==itm.getType()){
+                                            getLogger().info("COMPARE: "+itemStack.getType());
                                             count++;
                                         }else{
                                             if(itemStack.getType()!=Material.AIR){

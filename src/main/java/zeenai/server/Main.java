@@ -32,7 +32,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
-import org.bukkit.block.data.type.Chest;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.Inventory;
@@ -317,11 +317,12 @@ public class Main extends JavaPlugin {
                                 Location bkLoc = vec3.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(eString));
                                 Block b = bkLoc.getBlock();
                                 
-                                Container con = (Container)b.getState();
-                                for(int i=0;i<con.getInventory().getSize();i++){
-                                    if(con.getInventory().getItem(i).getType()==itm.getType())continue;// Don't spam the server with refill requests or update NBT when its not needed yet.
-                                    con.getInventory().setItem(i, itm);
+                                Chest con = (Chest)b.getState();
+                                for(int i=0;i<con.getBlockInventory().getSize();i++){
+                                    if(con.getBlockInventory().getItem(i).getType()==itm.getType())continue;// Don't spam the server with refill requests or update NBT when its not needed yet.
+                                    con.getBlockInventory().setItem(i, itm);
                                 }
+                                
                             }
                         }
                     }

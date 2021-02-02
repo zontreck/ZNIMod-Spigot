@@ -328,6 +328,9 @@ public class Main extends JavaPlugin {
                                     ItemStack[] inv = con.getInventory().getContents();
                                     getLogger().info("Slot count: "+inv.length);
                                     int count=0;
+                                    if(inv==null){
+                                        getLogger().info("INV is null");
+                                    }
                                     for (ItemStack itemStack : inv) {
                                         
                                         getLogger().info("COMPARE: "+itemStack.getType());

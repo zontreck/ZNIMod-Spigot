@@ -30,10 +30,14 @@ public class BlockIgniteListener implements Listener {
     public void onBlockExplode(BlockExplodeEvent ev){
         FileConfiguration fc = AntiGrief.GetConfig();
         if(fc.getBoolean("antigrief.healExplode")){
-            Main.GetMainInstance().getLogger().info("Entity Exploded!");
             List<Block> blkList = ev.blockList();
             List<Block> fullList = new ArrayList<Block>();
-
+            if(!fc.getBoolean("antigrief.healNetherExplode")){
+                if(ev.getBlock().getWorld().getName() == fc.getString("antigrief.netherName")){
+                    return;
+                }
+            }
+            Main.GetMainInstance().getLogger().info("Entity Exploded!");
             for (Block block : blkList) {
                 for (Block block2 : TreeFeller.RadiusBlocks(block.getLocation(), 3)) {
                     fullList.add(block2);
@@ -58,6 +62,11 @@ public class BlockIgniteListener implements Listener {
     public void onEntityExplode(EntityExplodeEvent ev){
         FileConfiguration fc = AntiGrief.GetConfig();
         if(fc.getBoolean("antigrief.healExplode")){
+            if(!fc.getBoolean("antigrief.healNetherExplode")){
+                if(ev.getLocation().getWorld().getName() == fc.getString("antigrief.netherName")){
+                    return;
+                }
+            }
             Main.GetMainInstance().getLogger().info("Entity Exploded!");
             List<Block> blkList = ev.blockList();
             List<Block> fullList = new ArrayList<Block>();
@@ -87,6 +96,12 @@ public class BlockIgniteListener implements Listener {
     public void onEntityExplode(EntityBreakDoorEvent ev){
         FileConfiguration fc = AntiGrief.GetConfig();
         if(fc.getBoolean("antigrief.healExplode")){
+
+            if(!fc.getBoolean("antigrief.healNetherExplode")){
+                if(ev.getBlock().getWorld().getName() == fc.getString("antigrief.netherName")){
+                    return;
+                }
+            }
             Main.GetMainInstance().getLogger().info("Entity Exploded!");
             List<Block> blkList = new ArrayList<Block>();
             blkList.add(ev.getBlock());

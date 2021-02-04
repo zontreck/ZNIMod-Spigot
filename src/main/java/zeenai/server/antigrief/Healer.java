@@ -112,7 +112,11 @@ public class Healer implements Runnable
             fc.set("antigrief.healFire", true);
             AntiGrief.SaveConfig();
         }
-        
+
+        if(!fc.contains("antigrief.healNetherExplode")){
+            fc.set("antigrief.healNetherExplode", false);
+            fc.set("antigrief.netherName", "world_nether");
+        }
 
         // Heal this block
         // If this block has changed once the 2nd pass starts, then repair it again and reschedule 2nd pass.

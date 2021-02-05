@@ -27,7 +27,7 @@ commands:
   setautostock:
     description: Set automatic stock
     usage: /setautostock
-    permissions: "znimod.opCommands"
+    permission: "znimod.opCommands"
   sethome:
     description: Sets home to your current location
     usage: /sethome [string:HomeName]
@@ -44,7 +44,7 @@ commands:
     description: Sets the spawn location
     usage: /setspawn
     aliases: [ss]
-    permissions: "znimod.opCommands"
+    permission: "znimod.opCommands"
   respawn:
     description: Returns you to the spawn
     usage: /respawn
@@ -53,17 +53,17 @@ commands:
     description: Opens your custom player vault
     usage: /playervault [string:identity]
     aliases: [pv]
-    permissions: "znimod.unlimitedVC"
+    permission: "znimod.unlimitedVC"
   oplayervault:
     description: Opens the specified player's vault
     usage: /oplayervault [string:PlayerName] [string:identity]
     aliases: [opv, othervault, viewinv, peek]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   gotoheight:
     description: Instant teleport to a specified height on the Y axis
     usage: /gotoheight [decimal:Height]
     aliases: [gth]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   rmvault:
     description: Removes one of your vaults and rezzes the items immediately in game at your position
     usage: /rmvault [string:Identity]
@@ -71,7 +71,7 @@ commands:
   nukevault:
     description: Nukes a vault, deleting it and its contained items forever
     usage: /nukevault [string:Player] [string:Identity]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   homes:
     description: Lists homes
     usage: /homes [string:Player:optional]
@@ -89,16 +89,16 @@ commands:
   xp:
     description: Manipulates experience points
     usage: /xp [add/rem/get] [player] [amount:optionalForGet]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   gamemode:
     description: Changes your gamemode
     usage: /gamemode [int:Mode] [string:TargetPlayer:optional]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
     aliases: [gm]
   pushinv:
     description: Push current inventory onto vault
     usage: /pushinv [string:VaultID]
-    permissions: "znimod.unlimitedVC"
+    permission: "znimod.unlimitedVC"
   popinv:
     description: Pop vault back to inventory
     usage: /popinv [string:VaultID]
@@ -120,7 +120,7 @@ commands:
     description: Opens color selection menu for prefix
     usage: /prefixc
     aliases: [prefixc]
-    permissions: "znimod.customPrefix"
+    permission: "znimod.customPrefix"
   color:
     description: Opens the chat color menu
     usage: /color
@@ -128,7 +128,7 @@ commands:
   prefix:
     description: Sets the prefix text!
     usage: /prefix
-    permissions: "znimod.customPrefix"
+    permission: "znimod.customPrefix"
   namecolor:
     description: Colors your name
     usage: /cname
@@ -136,7 +136,7 @@ commands:
   znireload:
     description: Reload the ZNIMod configuration
     usage: /znireload
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   trash:
     description: Opens a null inventory window to throw away items
     usage: /trash
@@ -147,12 +147,12 @@ commands:
     description: Lists force loaded chunks
     usage: /listfl
     aliases: [lfl, listflchunks, listforceloaded]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   flchunk:
     description: Toggles force load for the chunk the player is in
     usage: /flchunk
     aliases: [fl]
-    permissions: "znimod.opCommands"
+    permission: "znimod.opCommands"
   viewinv:
     description: Opens a player's inventory! (op required to edit!)
     usage: /viewinv
@@ -163,7 +163,7 @@ commands:
   setcost:
     description: Sets the cost for the item in hand
     usage: /setcost [int:NewCost]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   buylevel:
     description: Buy experience levels (1 XP = 500)
     usage: /buylevel [int:NumberOfLevels]
@@ -185,14 +185,14 @@ commands:
   fly:
     description: Toggles flight (Admin command permission required)
     usage: /fly
-    permissions: "znimod.flight"
+    permission: "znimod.flight"
   autochop:
     description: Toggles autochop for you
     usage: /autochop
   viewradius:
     description: Sets blocks in radius to bedrock
     usage: /viewradius [radius]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   undochop:
     description: UNDO LAST AUTOCHOP ACTION
     usage: /undochop
@@ -211,17 +211,17 @@ commands:
   clearradius:
     description: Clear a radius of blocks using explosion heal pattern (Test)
     usage: /clearradius [int:Radius]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
     aliases: [clr]
   restorebackup:
     description: Restore backup of blocks (TEST)
     usage: /restorebackup
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
     aliases: [rbr]
   clearbackup:
     description: Clear backup map (Test)
     usage: /clearbackup
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
     aliases: [clrbak]
   zpos1:
     description: Sets zPos1
@@ -241,7 +241,7 @@ commands:
   clearqueue:
     description: Clears queue
     usage: /clearqueue
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
     aliases: ["cq"]
   setorigin:
     description: Sets origin. Primarily used for the ZNIMod block modifiers for command blocks
@@ -255,7 +255,7 @@ commands:
   forceupdate:
     description: Forcibly updates blocks near position.
     usage: /forceupdate [x] [y] [z] [world] [radius]
-    permissions: "znimod.adminCommands"
+    permission: "znimod.adminCommands"
   setwarpperms:
     description: Sets warp permissions
     usage: /setwarpperms [0/1/2::owner/name/full]
@@ -263,22 +263,22 @@ commands:
   note:
     description: Get note contents
     usage: /note [noteName]
-    permissions: "znimod.notes"
+    permission: "znimod.notes"
   notes:
     description: Lists all notes
     usage: /notes
-    permissions: "znimod.notes"
+    permission: "znimod.notes"
   takenote:
     description: Takes notes
     usage: /takenote [noteName] [note..text...]
-    permissions: "znimod.notes"
+    permission: "znimod.notes"
   prefixes:
     description: Lists available prefixes
     usage: /prefixes
   delnote:
     description: Deletes a saved note
     usage: /delnote [noteName]
-    permissions: "znimod.notes"
+    permission: "znimod.notes"
   applyprefix:
     description: Automated command - used by /prefixes
     usage: /prefixes
@@ -288,3 +288,7 @@ commands:
   fillair:
     description: Fills the cube area of pos1 and pos2
     usage: /fillair
+  disablenetherheal:
+    description: Disables healing of explosions in the nether
+    usage: /disablenetherheal
+    permission: "znimod.opCommands"

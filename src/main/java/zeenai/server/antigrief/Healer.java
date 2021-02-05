@@ -116,6 +116,7 @@ public class Healer implements Runnable
         if(!fc.contains("antigrief.healNetherExplode")){
             fc.set("antigrief.healNetherExplode", false);
             fc.set("antigrief.netherName", "world_nether");
+            AntiGrief.SaveConfig();
         }
 
         // Heal this block

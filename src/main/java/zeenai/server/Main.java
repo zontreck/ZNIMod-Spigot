@@ -51,6 +51,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
+import zeenai.server.antigrief.*;
 import zeenai.server.chunkforceloader.*;
 import zeenai.server.colormagic.*;
 import zeenai.server.commands.*;
@@ -75,16 +76,6 @@ import zeenai.server.treechops.RestoreBlock;
 import zeenai.server.treechops.TreeFeller;
 import zeenai.server.treechops.Undo;
 import zeenai.server.treechops.ViewRadius;
-import zeenai.server.antigrief.BlockIgniteListener;
-import zeenai.server.antigrief.CheckQueue;
-import zeenai.server.antigrief.ClearBackup;
-import zeenai.server.antigrief.ClearQueue;
-import zeenai.server.antigrief.ClearRadius;
-import zeenai.server.antigrief.FinishHeal;
-import zeenai.server.antigrief.HealStats;
-import zeenai.server.antigrief.Healer;
-import zeenai.server.antigrief.RestoreBackup;
-import zeenai.server.antigrief.StartPhase2;
 import zeenai.server.autocraft.ZAutoCraft;
 import zeenai.server.autostock.SetAutoStock;
 import zeenai.server.autostock.StockConfig;
@@ -243,6 +234,8 @@ public class Main extends JavaPlugin {
         getCommand("repair").setExecutor(new Repair());
         getCommand("setautostock").setExecutor(new SetAutoStock());
         getCommand("fillair").setExecutor(_fillair);
+        getCommand("disablenetherheal").setExecutor(new DisableNetherHeal());
+        getCommand("enablenetherheal").setExecutor(new EnableNetherHeal());
 
 
 

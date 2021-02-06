@@ -45,7 +45,6 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import net.minecraft.server.v1_16_R3.EntityFox.i;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.*;

@@ -71,6 +71,10 @@ public class LoadSchematic implements CommandExecutor {
                     SL = new SchematicLoader_v1_16_4();
                     break;
                 }
+                case "v1_16_R4":{
+                    SL=new SchematicLoader_v1_16_4();
+                    break;
+                }
                 default: {
                     sender.sendMessage("This version appears to be unsupported! ("+version+")");
                     return false;

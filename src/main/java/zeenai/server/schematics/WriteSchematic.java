@@ -17,6 +17,7 @@ import zeenai.server.NullConfig;
 import zeenai.server.schematics.writer.SchematicWriter;
 import zeenai.server.schematics.writer.compatibility.v1_15_r1.SchematicWriter_v1_15_r1;
 import zeenai.server.schematics.writer.compatibility.v1_16_r3.SchematicWriter_v1_16_r3;
+import zeenai.server.schematics.writer.compatibility.v1_16_r4.SchematicWriter_v1_16_r4;
 
 public class WriteSchematic implements CommandExecutor {
 
@@ -67,6 +68,10 @@ public class WriteSchematic implements CommandExecutor {
                     }
                     case "v1_16_R3":{
                         sw = new SchematicWriter_v1_16_r3();
+                        break;
+                    }
+                    case "v1_16_R4":{
+                        sw=new SchematicWriter_v1_16_r4();
                         break;
                     }
                     default:{

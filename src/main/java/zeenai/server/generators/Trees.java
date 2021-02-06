@@ -1,4 +1,4 @@
-package zeenai.server.generators.zni;
+package zeenai.server.generators;
 
 import java.util.Random;
 

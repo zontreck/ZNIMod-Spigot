@@ -57,7 +57,7 @@ import zeenai.server.colormagic.*;
 import zeenai.server.commands.*;
 import zeenai.server.currency.*;
 import zeenai.server.entitycodec.RestoreEntity;
-import zeenai.server.generators.zni.ZniGenerator;
+import zeenai.server.generators.ZniGenerator;
 import zeenai.server.notepad.DeleteNote;
 import zeenai.server.notepad.GetNote;
 import zeenai.server.notepad.Notes;

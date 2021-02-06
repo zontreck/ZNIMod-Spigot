@@ -292,3 +292,7 @@ commands:
     description: Disables healing of explosions in the nether
     usage: /disablenetherheal
     permission: "znimod.opCommands"
+  enablenetherheal:
+    description: Enables healing of explosions in the nether
+    usage: /enablenetherheal
+    permission: "znimod.opCommands"

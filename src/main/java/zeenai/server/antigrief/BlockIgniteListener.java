@@ -33,7 +33,7 @@ public class BlockIgniteListener implements Listener {
             List<Block> blkList = ev.blockList();
             List<Block> fullList = new ArrayList<Block>();
             if(!fc.getBoolean("antigrief.healNetherExplode")){
-                if(ev.getBlock().getWorld().getName() == fc.getString("antigrief.netherName")){
+                if(ev.getBlock().getLocation().getWorld().getName().compareToIgnoreCase(fc.getString("antigrief.netherName"))==0){
                     return;
                 }
             }
@@ -63,7 +63,7 @@ public class BlockIgniteListener implements Listener {
         FileConfiguration fc = AntiGrief.GetConfig();
         if(fc.getBoolean("antigrief.healExplode")){
             if(!fc.getBoolean("antigrief.healNetherExplode")){
-                if(ev.getLocation().getWorld().getName() == fc.getString("antigrief.netherName")){
+                if(ev.getLocation().getWorld().getName().compareToIgnoreCase(fc.getString("antigrief.netherName"))==0){
                     return;
                 }
             }
@@ -98,7 +98,7 @@ public class BlockIgniteListener implements Listener {
         if(fc.getBoolean("antigrief.healExplode")){
 
             if(!fc.getBoolean("antigrief.healNetherExplode")){
-                if(ev.getBlock().getWorld().getName() == fc.getString("antigrief.netherName")){
+                if(ev.getBlock().getLocation().getWorld().getName().compareToIgnoreCase(fc.getString("antigrief.netherName"))==0){
                     return;
                 }
             }

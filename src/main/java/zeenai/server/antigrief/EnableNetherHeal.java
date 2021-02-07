@@ -18,7 +18,7 @@ public class EnableNetherHeal implements CommandExecutor {
         fc.set("antigrief.netherName", p.getLocation().getWorld().getName());
         if(sender.hasPermission("znimod.opCommands")) {
             AntiGrief.SaveConfig();
-            sender.sendMessage("Disabling..");
+            sender.sendMessage("Enabling..");
         }
         else {
             sender.sendMessage("Op Only Command");

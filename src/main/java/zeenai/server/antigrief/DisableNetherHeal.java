@@ -17,7 +17,7 @@ public class DisableNetherHeal implements CommandExecutor {
         Player p = (Player)sender;
         fc.set("antigrief.netherName", p.getLocation().getWorld().getName());
         if(sender.hasPermission("znimod.opCommands")) {
-            sender.sendMessage("Enabling..");
+            sender.sendMessage("Disabling..");
 
             AntiGrief.SaveConfig();
         }else {

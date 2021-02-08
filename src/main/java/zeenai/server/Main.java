@@ -308,9 +308,8 @@ public class Main extends JavaPlugin {
                                 Location bkLoc = vec3.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(eString));
                                 Block b = bkLoc.getBlock();
 
-                                ItemStack itm = new ItemStack(Material.valueOf(fc.getString(eString+"."+xString+"."+yString+"."+zString+".item")));
-                                itm.setAmount(Integer.parseInt(fc.getString(eString+"."+xString+"."+yString+"."+zString+".amount")));
-                                itm.setItemMeta((ItemMeta)fc.get(eString+"."+xString+"."+yString+"."+zString+".meta"));
+                                ItemStack itmx = fc.getItemStack(eString+"."+xString+"."+yString+"."+zString+".item");
+                                ItemStack itm = new ItemStack(itmx);
                                 if(b.getState() instanceof Chest){
                                     
                                     Chest con = (Chest)b.getState();
@@ -333,8 +332,7 @@ public class Main extends JavaPlugin {
                                         }
                                     }
                                     for(int i=count;i<con.getInventory().getSize();i++){
-                                        itm = new ItemStack(Material.valueOf(fc.getString(eString+"."+xString+"."+yString+"."+zString+".item")));
-                                        itm.setAmount(Integer.parseInt(fc.getString(eString+"."+xString+"."+yString+"."+zString+".amount")));
+                                        itm = new ItemStack(itmx);
                                         con.getInventory().addItem(itm);
                                     }
 

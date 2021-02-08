@@ -83,6 +83,7 @@ public class SetAutoStock implements CommandExecutor, Listener {
                         fc = StockConfig.GetConfig();
                         fc.set(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z+".item", itm.getType().name());
                         fc.set(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z+".amount", itm.getAmount());
+                        fc.set(pos.worldName+"."+(int)pos.x+"."+(int)pos.y+"."+(int)pos.z+".meta", itm.getItemMeta());
                         StockConfig.SaveConfig();
 
                         pie.setCancelled(true);

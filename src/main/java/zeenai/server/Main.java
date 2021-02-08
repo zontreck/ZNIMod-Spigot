@@ -310,6 +310,7 @@ public class Main extends JavaPlugin {
 
                                 ItemStack itm = new ItemStack(Material.valueOf(fc.getString(eString+"."+xString+"."+yString+"."+zString+".item")));
                                 itm.setAmount(Integer.parseInt(fc.getString(eString+"."+xString+"."+yString+"."+zString+".amount")));
+                                itm.setItemMeta((ItemMeta)fc.get(eString+"."+xString+"."+yString+"."+zString+".meta"));
                                 if(b.getState() instanceof Chest){
                                     
                                     Chest con = (Chest)b.getState();

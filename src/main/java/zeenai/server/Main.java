@@ -352,7 +352,7 @@ public class Main extends JavaPlugin {
                     for (Map.Entry<Location, List<ItemStack>> ix: containerRestore.entrySet()
                          ) {
                         // restore!
-                        Container cnt = (Container) ix.getKey().getBlock();
+                        Container cnt = (Container) ix.getKey().getBlock().getState();
                         //cnt.getInventory().setContents(ix.getValue());
                         List<ItemStack> stacks = ix.getValue();
                         for (ItemStack isx: stacks

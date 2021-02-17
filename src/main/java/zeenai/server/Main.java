@@ -377,6 +377,24 @@ public class Main extends JavaPlugin {
                             ) {
                                 br.getInventory().addItem(isx.clone());
                             }
+                        } else if(bs instanceof Dropper)
+                        {
+                            Dropper br = (Dropper) bs;
+                            List<ItemStack> stacks = ix.getValue();
+                            for (ItemStack isx: stacks
+                            ) {
+                                br.getInventory().addItem(isx.clone());
+                            }
+
+                        }else if(bs instanceof Dispenser)
+                        {
+                            Dispenser br = (Dispenser) bs;
+                            List<ItemStack> stacks = ix.getValue();
+                            for (ItemStack isx: stacks
+                            ) {
+                                br.getInventory().addItem(isx.clone());
+                            }
+
                         }
 
 

@@ -233,7 +233,7 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                 }
 
                 if(dat.hasName){
-                    org.bukkit.block.Chest nch = (org.bukkit.block.Chest) state;
+                    org.bukkit.block.Chest nch = (org.bukkit.block.Chest) state.getBlockData();
                     nch.setCustomName(dat.customName);
                 }
 

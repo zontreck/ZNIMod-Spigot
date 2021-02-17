@@ -60,8 +60,7 @@ public class StateCodec_Directional implements BlockStateCodec, Serializable {
                 Material.WHITE_GLAZED_TERRACOTTA,
                 Material.WITHER_SKELETON_WALL_SKULL,
                 Material.YELLOW_GLAZED_TERRACOTTA,
-                Material.ZOMBIE_WALL_HEAD,
-                Material.BARREL
+                Material.ZOMBIE_WALL_HEAD
 
         };
     }

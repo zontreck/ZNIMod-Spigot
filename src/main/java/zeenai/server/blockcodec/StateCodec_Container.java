@@ -120,13 +120,15 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
             //    dat.customName=nch.getCustomName();
             //}
 
-            if(_data instanceof DoubleChest)
+            if(_data instanceof Chest)
             {
-                dat.doubleChest=true;
                 Chest chh = (Chest)_data;
-                if(chh.getType() == Chest.Type.LEFT){
-                    dat.left = true;
-                }else dat.left=false;
+                if(chh.getType() != Chest.Type.SINGLE) {
+                    dat.doubleChest = true;
+                    if (chh.getType() == Chest.Type.LEFT) {
+                        dat.left = true;
+                    } else dat.left = false;
+                }
             }
 
 

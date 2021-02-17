@@ -113,11 +113,10 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                 Directional dirr = (Directional) _data;
                 dat.facing = dirr.getFacing().name();
             }
-
-            if(state instanceof Nameable){
+            org.bukkit.block.Chest nch = (org.bukkit.block.Chest)_data;
+            {
                 dat.hasName=true;
-                Nameable nam = (Nameable) state;
-                dat.customName=nam.getCustomName();
+                dat.customName=nch.getCustomName();
             }
 
             if(state instanceof DoubleChest)
@@ -234,8 +233,8 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                 }
 
                 if(dat.hasName){
-                    Nameable nam = (Nameable) dat;
-                    nam.setCustomName(dat.customName);
+                    org.bukkit.block.Chest nch = (org.bukkit.block.Chest) state;
+                    nch.setCustomName(dat.customName);
                 }
 
                 if(dat.doubleChest)

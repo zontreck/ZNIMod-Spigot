@@ -1,8 +1,14 @@
 package zeenai.server.blockcodec;
 
+import org.bukkit.Axis;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Orientable;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
@@ -45,6 +51,14 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
          */
         private static final long serialVersionUID = 189543875L;
         public String Contents;
+        public boolean orient;
+        public String orientation;
+
+        public boolean rotat;
+        public String rot;
+
+        public boolean dirr;
+        public String facing;
 
         public String AsString(){
             StringBuilder sb = new StringBuilder();
@@ -59,12 +73,38 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
         if (FriendlyList.contains(state.getType())) {
             
             Container cn = (Container)state;
+            BlockData _data = state.getBlockData();
+
             ContainerData dat = new ContainerData();
             Inventory inv = cn.getInventory();
-            YamlConfiguration yml = new YamlConfiguration();
-            yml.set("contents", inv.getContents());
-            dat.Contents=yml.saveToString();
+            List<ItemStack> its = new ArrayList<>();
+            for (ItemStack itsx : inv.getContents()
+                 ) {
+                if(itsx!=null){
+                    its.add(new ItemStack(itsx));
+                }
+            }
 
+            YamlConfiguration yml = new YamlConfiguration();
+            yml.set("contents", its);
+            dat.Contents=yml.saveToString();
+            if(_data instanceof Orientable){
+                dat.orient=true;
+                Orientable ori = (Orientable)_data;
+                dat.orientation= ori.getAxis().name();
+            }
+
+            if(_data instanceof Rotatable){
+                dat.rotat=true;
+                Rotatable roo = (Rotatable) _data;
+                dat.rot=roo.getRotation().name();
+            }
+
+            if(_data instanceof Directional){
+                dat.dirr=true;
+                Directional dirr = (Directional) _data;
+                dat.facing = dirr.getFacing().name();
+            }
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -147,7 +187,32 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                 } catch (InvalidConfigurationException e) {
                     e.printStackTrace();
                 }
-                bn.getInventory().setContents((ItemStack[])yml.get("contents"));
+
+                if(dat.orient){
+                    Orientable orii = (Orientable) state.getBlockData();
+                    orii.setAxis(Axis.valueOf(dat.orientation));
+                    bn.setBlockData(orii);
+                }
+
+                if(dat.rotat){
+                    Rotatable roo = (Rotatable) state.getBlockData();
+                    roo.setRotation(BlockFace.valueOf(dat.rot));
+                    bn.setBlockData(roo);
+                }
+
+                if(dat.dirr){
+                    Directional drr = (Directional) state.getBlockData();
+                    drr.setFacing(BlockFace.valueOf(dat.facing));
+                    bn.setBlockData(drr);
+                }
+
+                List<ItemStack> itx = (List<ItemStack>)yml.getList("contents");
+                for (ItemStack its: itx
+                     ) {
+                    if(its!=null){
+                        bn.getInventory().addItem(new ItemStack(its));
+                    }
+                }
 
 
             }

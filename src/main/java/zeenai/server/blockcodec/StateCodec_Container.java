@@ -70,7 +70,8 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
 
         public String AsString(){
             StringBuilder sb = new StringBuilder();
-            sb.append("Container Data "+Contents);
+            sb.append("Container Data "+Contents+"\nOrientable: "+orient+" - "+orientation+"\nRotatable: "+rotat+" - "+rot+"\nDirectional: "+dirr+" - "+facing+
+                    "\nDoubleChest: "+doubleChest+"\n>Left: "+left+"\nHas Custom Name: "+hasName+"\nCustom Name: "+customName);
 
             return sb.toString();
         }
@@ -233,8 +234,8 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                 }
 
                 if(dat.hasName){
-                    org.bukkit.block.Chest nch = (org.bukkit.block.Chest) state.getBlockData();
-                    nch.setCustomName(dat.customName);
+                    //org.bukkit.block.Chest nch = (org.bukkit.block.Chest) state.getBlockData();
+                    //nch.setCustomName(dat.customName);
                 }
 
                 if(dat.doubleChest)

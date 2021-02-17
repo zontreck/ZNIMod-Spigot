@@ -2,13 +2,13 @@ package zeenai.server.blockcodec;
 
 import org.bukkit.Axis;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
+import org.bukkit.Nameable;
+import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Orientable;
 import org.bukkit.block.data.Rotatable;
+import org.bukkit.block.data.type.Chest;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
@@ -60,6 +60,14 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
         public boolean dirr;
         public String facing;
 
+        public boolean doubleChest;
+        public boolean left;
+
+        public boolean hasName;
+        public String customName;
+
+
+
         public String AsString(){
             StringBuilder sb = new StringBuilder();
             sb.append("Container Data "+Contents);
@@ -105,6 +113,24 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                 Directional dirr = (Directional) _data;
                 dat.facing = dirr.getFacing().name();
             }
+
+            if(state instanceof Nameable){
+                dat.hasName=true;
+                Nameable nam = (Nameable) state;
+                dat.customName=nam.getCustomName();
+            }
+
+            if(state instanceof DoubleChest)
+            {
+                dat.doubleChest=true;
+                Chest chh = (Chest)_data;
+                if(chh.getType() == Chest.Type.LEFT){
+                    dat.left = true;
+                }else dat.left=false;
+            }
+
+
+
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -188,6 +214,7 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                     e.printStackTrace();
                 }
 
+
                 if(dat.orient){
                     Orientable orii = (Orientable) state.getBlockData();
                     orii.setAxis(Axis.valueOf(dat.orientation));
@@ -205,6 +232,21 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                     drr.setFacing(BlockFace.valueOf(dat.facing));
                     bn.setBlockData(drr);
                 }
+
+                if(dat.hasName){
+                    Nameable nam = (Nameable) dat;
+                    nam.setCustomName(dat.customName);
+                }
+
+                if(dat.doubleChest)
+                {
+                    Chest chh = (Chest)state.getBlockData();
+                    if(dat.left)chh.setType(Chest.Type.LEFT);
+                    else chh.setType(Chest.Type.RIGHT);
+                    bn.setBlockData(chh);
+                }
+
+
 
                 List<ItemStack> itx = (List<ItemStack>)yml.getList("contents");
                 for (ItemStack its: itx

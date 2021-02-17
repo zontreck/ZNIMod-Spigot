@@ -123,7 +123,7 @@ public class Main extends JavaPlugin {
     public List<Location> stateRequests = new ArrayList<Location>();
     public Map<Location, BlockState> states = new HashMap<Location, BlockState>();
     public List<RestoreBlock> forceQueue = new ArrayList<RestoreBlock>();
-    public Map<Location, ItemStack[]> containerRestore = new HashMap<>();
+    public Map<Location, List<ItemStack>> containerRestore = new HashMap<>();
 
 
     public class DisplayNameRegistry{
@@ -349,11 +349,16 @@ public class Main extends JavaPlugin {
 
                 if(containerRestore.size()>0){
                     // Iterate over the map, then restore the inventory onto the block, then remove the inventory from restore queue
-                    for (Map.Entry<Location, ItemStack[]> ix: containerRestore.entrySet()
+                    for (Map.Entry<Location, List<ItemStack>> ix: containerRestore.entrySet()
                          ) {
                         // restore!
                         Container cnt = (Container) ix.getKey().getBlock();
-                        cnt.getInventory().setContents(ix.getValue());
+                        //cnt.getInventory().setContents(ix.getValue());
+                        List<ItemStack> stacks = ix.getValue();
+                        for (ItemStack isx: stacks
+                             ) {
+                            cnt.getInventory().addItem(new ItemStack(isx));
+                        }
                         cnt.update();
                     }
                     containerRestore.clear();

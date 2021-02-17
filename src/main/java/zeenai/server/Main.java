@@ -27,11 +27,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
-import org.bukkit.block.Chest;
+import org.bukkit.block.*;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.Inventory;
@@ -352,14 +348,39 @@ public class Main extends JavaPlugin {
                     for (Map.Entry<Location, List<ItemStack>> ix: containerRestore.entrySet()
                          ) {
                         // restore!
-                        Container cnt = (Container) ix.getKey().getBlock().getState();
-                        //cnt.getInventory().setContents(ix.getValue());
-                        List<ItemStack> stacks = ix.getValue();
-                        for (ItemStack isx: stacks
-                             ) {
-                            cnt.getInventory().addItem(isx.clone());
+                        BlockState bs = ix.getKey().getBlock().getState();
+                        if(bs instanceof Chest){
+                            Chest ch = (Chest)bs;
+                            List<ItemStack> stacks = ix.getValue();
+                            for (ItemStack isx: stacks
+                            ) {
+                                ch.getInventory().addItem(isx.clone());
+                            }
+                        } else if(bs instanceof Barrel){
+                            Barrel br = (Barrel)bs;
+                            List<ItemStack> stacks = ix.getValue();
+                            for (ItemStack isx: stacks
+                            ) {
+                                br.getInventory().addItem(isx.clone());
+                            }
+                        } else if(bs instanceof Hopper){
+                            Hopper br = (Hopper)bs;
+                            List<ItemStack> stacks = ix.getValue();
+                            for (ItemStack isx: stacks
+                            ) {
+                                br.getInventory().addItem(isx.clone());
+                            }
+                        } else if(bs instanceof ShulkerBox){
+                            ShulkerBox br = (ShulkerBox) bs;
+                            List<ItemStack> stacks = ix.getValue();
+                            for (ItemStack isx: stacks
+                            ) {
+                                br.getInventory().addItem(isx.clone());
+                            }
                         }
-                        cnt.update();
+
+
+
                     }
                     containerRestore.clear();
                     getLogger().info("Container forced restoration completed");

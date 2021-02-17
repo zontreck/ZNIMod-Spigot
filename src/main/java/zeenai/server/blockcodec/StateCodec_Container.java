@@ -251,6 +251,9 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
 
 
                 List<ItemStack> itx = (List<ItemStack>)yml.getList("contents");
+                ItemStack[] iix = (ItemStack[])itx.toArray();
+                Main.GetMainInstance().containerRestore.put(state.getLocation(), iix);
+                /*
                 for (ItemStack its: itx
                      ) {
                     if(its!=null){
@@ -258,7 +261,7 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                     }
                 }
                 bn.update();
-                
+                */
 
 
             }

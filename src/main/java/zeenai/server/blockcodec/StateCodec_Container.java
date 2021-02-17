@@ -245,19 +245,7 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                     Chest chh = (Chest)state.getBlockData();
                     if(dat.left)chh.setType(Chest.Type.LEFT);
                     else chh.setType(Chest.Type.RIGHT);
-
-
-                    org.bukkit.block.Chest chs = (org.bukkit.block.Chest)state;
-
-                    List<ItemStack> itx = (List<ItemStack>)yml.getList("contents");
-                    for (ItemStack its: itx
-                    ) {
-                        if(its!=null){
-                            chs.getInventory().addItem(new ItemStack(its));
-                        }
-                    }
-                    chs.setBlockData(chh);
-                    return;
+                    bn.setBlockData(chh);
                 }
 
 
@@ -269,6 +257,8 @@ public class StateCodec_Container implements BlockStateCodec, Serializable {
                         bn.getInventory().addItem(new ItemStack(its));
                     }
                 }
+                bn.update();
+                
 
 
             }

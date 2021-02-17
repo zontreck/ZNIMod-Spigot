@@ -357,11 +357,12 @@ public class Main extends JavaPlugin {
                         List<ItemStack> stacks = ix.getValue();
                         for (ItemStack isx: stacks
                              ) {
-                            cnt.getInventory().addItem(new ItemStack(isx));
+                            cnt.getInventory().addItem(isx.clone());
                         }
                         cnt.update();
                     }
                     containerRestore.clear();
+                    getLogger().info("Container forced restoration completed");
                 }
 
             }

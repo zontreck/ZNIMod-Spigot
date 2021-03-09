@@ -162,7 +162,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                     schema.clear();
                     fx.set("schematicWriter.schematic", schema);
                     xSeq++;
-                    fx.set("schematicWriter.seq", xSeq);
+                    fx.set("schematicWriter.schem", xSeq);
                 }
 
                 Main.GetMainInstance().getLogger().info("On block "+xCurBlock+" of part "+xSeq);
@@ -171,7 +171,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
             List<RestoreEntity> serializedEntity = new ArrayList<RestoreEntity>();
 
             List<Vector3> schem = (List<Vector3>)fxx.getList("schematicWriter.schematic");
-            int Seq = fxx.getInt("schematicWriter.seq");
+            int Seq = fxx.getInt("schematicWriter.schem");
             for (Entry<Vector3, Entity> ent:uniqueEntityMap.entrySet()) {
                 Main.GetMainInstance().getLogger().info("On Entity: "+ent.getValue().getType().name());
                 

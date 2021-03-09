@@ -28,12 +28,12 @@ public class BlockStateCodecs
         registerCodec(new StateCodec_Orientable());
         registerCodec(new StateCodec_Stairs());
         registerCodec(new StateCodec_Slabs());
+        registerCodec(new StateCodec_GlassPane());
         registerCodec(new StateCodec_Fence());
         registerCodec(new StateCodec_TrapDoor());
         registerCodec(new StateCodec_Rotatable());
         registerCodec(new StateCodec_Switch());
         registerCodec(new StateCodec_Door());
-        registerCodec(new StateCodec_GlassPane());
         registerCodec(new StateCodec_Wall());
         registerCodec(new StateCodec_Banner());
         registerCodec(new StateCodec_Container());

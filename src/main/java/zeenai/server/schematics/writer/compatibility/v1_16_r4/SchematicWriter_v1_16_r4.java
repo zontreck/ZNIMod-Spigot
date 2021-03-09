@@ -100,6 +100,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                         rb.loc = relative.GetBukkitLocation(b.getWorld());
                         rb.mat=Material.AIR;
                         rb.world = b.getWorld().getName();
+                        rb.relative=pos1;
                         schema.add(rb);
                         //fx.set("schematicWriter.current", xCurBlock);
                         fx.set("schematicWriter.schematic", schema);
@@ -140,6 +141,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                 rb.loc = relative.GetBukkitLocation(b.getWorld());
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
+                rb.relative = pos1;
                 
                 schema.add(rb);
                 fx.set("schematicWriter.schematic", schema);

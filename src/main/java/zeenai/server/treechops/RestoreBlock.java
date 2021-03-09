@@ -13,6 +13,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import zeenai.server.Main;
 import zeenai.server.blockcodec.BlockStateCodecs;
+import zeenai.server.schematics.writer.Vector3;
 
 
 public class RestoreBlock implements ConfigurationSerializable, Cloneable {
@@ -23,6 +24,8 @@ public class RestoreBlock implements ConfigurationSerializable, Cloneable {
     public Material mat;
 
     private String state;
+
+    public Vector3 relative; // This is the pos1 value, so that we can calculate a precise position if serialization goes wrong with a relative position.
 
     public boolean HasState(){
         if(blkState!=null)return true;
@@ -71,7 +74,7 @@ public class RestoreBlock implements ConfigurationSerializable, Cloneable {
             if(blkState!= null)
                 data.put("blockState", BlockStateCodecs.serialize(blkState));
         }catch(Exception e){
-            Main.GetMainInstance().getLogger().info("Warning: Block at location: "+loc.toString()+" has failed export: "+e.getMessage());
+            Main.GetMainInstance().getLogger().info("Warning: Block at location: "+new Vector3(loc).Add(relative).ToString()+" has failed export: "+e.getMessage());
             return null;
         }
 

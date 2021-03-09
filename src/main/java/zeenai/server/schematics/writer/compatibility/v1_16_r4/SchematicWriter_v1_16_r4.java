@@ -92,7 +92,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
 
                     // Grab the properties IF the null config has a specific flag
                     if(fc.getBoolean("IncludeAir")){
-                        xCurBlock++;
+                        //xCurBlock++;
                         rb.biome = b.getBiome();
                         rb.blkState=null;
                 
@@ -101,7 +101,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                         rb.mat=Material.AIR;
                         rb.world = b.getWorld().getName();
                         schema.add(rb);
-                        fx.set("schematicWriter.current", xCurBlock);
+                        //fx.set("schematicWriter.current", xCurBlock);
                         fx.set("schematicWriter.schematic", schema);
                     }
                     return;
@@ -203,6 +203,10 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
             }
             CurrentPlayer.sendMessage(ChatColor.GREEN+"Processing completed!");
             schem=null;
+
+            fxx.set("schematicWriter.current",0);
+            fxx.set("schematicWriter.schem",0);
+            fxx.set("schematicWriter.schematic",new ArrayList<RestoreBlock>());
             
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

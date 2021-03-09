@@ -47,22 +47,29 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
             Map<Vector3, Entity> uniqueEntityMap = new HashMap<Vector3, Entity>();
             pos2.worldName=CurrentPlayer.getWorld().getName();
             pos1.worldName=CurrentPlayer.getWorld().getName();
-            List<Vector3> cubed = pos1.Cube(pos2);
-            List<RestoreBlock> schem = new ArrayList<RestoreBlock>();
-            CurrentPlayer.sendMessage(ChatColor.AQUA+"Processing information for "+cubed.size()+" blocks");
-            Main.GetMainInstance().getLogger().info("Processing information for "+cubed.size()+" blocks");
-
+            //List<Vector3> cubed = pos1.Cube(pos2);
+            //List<RestoreBlock> schem = new ArrayList<RestoreBlock>();
             
-            int CurBlock = 0;
-            int Seq=0;
-            while(cubed.size()!=0){
-                Vector3 vector3 = cubed.get(0);
+
+            FileConfiguration fxx = NullConfig.GetConfig(null);
+            fxx.set("schematicWriter.current",0);
+            fxx.set("schematicWriter.schem", 0);
+            fxx.set("schematicWriter.schematic",new ArrayList<RestoreBlock>());
+            
+            pos1.ForEachCubed(pos2, (val)->{
+                Vector3 vector3 = val;
+                FileConfiguration fx = NullConfig.GetConfig(null);
+                int xCurBlock = fx.getInt("schematicWriter.current");
+                int xSeq = fx.getInt("schematicWriter.schem");
+                List<RestoreBlock> schema = (List<RestoreBlock>)fx.getList("schematicWriter.schematic");
+
+
                 RestoreBlock rb = new RestoreBlock();
                 Location L = vector3.GetBukkitLocation(CurrentPlayer.getWorld());
                 Block b = L.getBlock();
                 if(!b.getChunk().isLoaded()){
                     b.getChunk().load();
-                    continue; // give time for the chunk to load
+                    while(!b.getChunk().isLoaded()){}
                 }
                 b.getWorld().playSound(b.getLocation(), Sound.ENTITY_ITEM_PICKUP,1F,rnd.nextFloat() * 2);
                 b.getWorld().playEffect(b.getLocation(), Effect.MOBSPAWNER_FLAMES, 50);
@@ -73,12 +80,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                         if(entity2.getKey().Same(new Vector3(entity.getLocation())))doesNotHaveEntry=false;
                         //else Main.GetMainInstance().getLogger().info("Vectors are not the same ("+entity2.getKey().ToString()+") / ("+new Vector3(entity.getLocation()).ToString()+")");
                     }
-                    boolean inCube=false;
-                    for(Vector3 v : cubed){
-                        if(v.Same(new Vector3(entity.getLocation())))inCube=true;
-                        //else Main.GetMainInstance().getLogger().info("Vectors are not the same for cubed area check ("+v.ToString()+") / ("+new Vector3(entity.getLocation()).ToString()+")");
-                    }
-                    if(doesNotHaveEntry && inCube){
+                    if(doesNotHaveEntry){
                         if(EntityCodecs.hasCodec(entity.getType()))
                             uniqueEntityMap.put(new Vector3(entity.getLocation()), entity);
                     }
@@ -90,7 +92,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
 
                     // Grab the properties IF the null config has a specific flag
                     if(fc.getBoolean("IncludeAir")){
-                        CurBlock++;
+                        xCurBlock++;
                         rb.biome = b.getBiome();
                         rb.blkState=null;
                 
@@ -98,15 +100,15 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                         rb.loc = relative.GetBukkitLocation(b.getWorld());
                         rb.mat=Material.AIR;
                         rb.world = b.getWorld().getName();
-                        schem.add(rb);
+                        schema.add(rb);
+                        fx.set("schematicWriter.current", xCurBlock);
+                        fx.set("schematicWriter.schematic", schema);
                     }
-
-                    cubed.remove(0);
-                    vector3.Destroy();
-                    continue;
+                    return;
                 }
 
-                CurBlock++;
+                xCurBlock++;
+                fx.set("schematicWriter.current", xCurBlock);
                 rb.biome = b.getBiome();
                 if(BlockStateCodecs.hasCodec(b.getType())){
                     
@@ -139,32 +141,36 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
                 
-                schem.add(rb);
+                schema.add(rb);
+                fx.set("schematicWriter.schematic", schema);
 
-                cubed.remove(vector3);
+                if(xCurBlock >= 1000){
 
-                vector3.Destroy();
-                vector3=null;
-
-                if(CurBlock >= 1000){
-
-                    CurrentPlayer.sendMessage(ChatColor.DARK_GREEN+"In Progress ["+cubed.size()+" remaining]");
-                    Main.GetMainInstance().getLogger().info("In Progress ["+cubed.size()+" remaining : "+schematicName+".schem3]");
-                    CurBlock=0;
+                    xCurBlock=0;
+                    fx.set("schematicWriter.current", 0);
                     FileConfiguration schemSeq = new YamlConfiguration();
-                    schemSeq.set("schematic.blocks",schem);
+                    schemSeq.set("schematic.blocks",schema);
                             
                     //EntityCodecs codecs = new EntityCodecs();
                     
-                    schemSeq.save(new File(F+"."+Seq+".schem3"));
-                    schem.clear();
-                    Seq++;
+                    try {
+                        schemSeq.save(new File(F+"."+xSeq+".schem3"));
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    schema.clear();
+                    fx.set("schematicWriter.schematic", schema);
+                    xSeq++;
                 }
 
-                Main.GetMainInstance().getLogger().info("On block "+CurBlock+" of part "+Seq);
-            }
+                Main.GetMainInstance().getLogger().info("On block "+xCurBlock+" of part "+xSeq);
+            });
             int entityNumber=0;
             List<RestoreEntity> serializedEntity = new ArrayList<RestoreEntity>();
+
+            List<Vector3> schem = (List<Vector3>)fxx.getList("schematicWriter.schematic");
+            int Seq = fxx.getInt("schematicWriter.seq");
             for (Entry<Vector3, Entity> ent:uniqueEntityMap.entrySet()) {
                 Main.GetMainInstance().getLogger().info("On Entity: "+ent.getValue().getType().name());
                 
@@ -187,8 +193,6 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
 
             if(!schem.isEmpty() ||!serializedEntity.isEmpty()){
 
-                CurrentPlayer.sendMessage(ChatColor.DARK_GREEN+"In Progress ["+cubed.size()+" remaining]");
-                Main.GetMainInstance().getLogger().info("In Progress ["+cubed.size()+" remaining : "+schematicName+".schem3]");
                 FileConfiguration schemSeq = new YamlConfiguration();
                 if(!schem.isEmpty())
                     schemSeq.set("schematic.blocks",schem);

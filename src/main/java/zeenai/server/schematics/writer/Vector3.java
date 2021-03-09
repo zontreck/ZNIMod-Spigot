@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -152,6 +153,90 @@ public class Vector3 implements ConfigurationSerializable, Comparable, Serializa
             
         }
         return new Location(w, x, y, z);
+    }
+
+    public void ForEachCubed(Vector3 Target, Consumer<Vector3> callback)
+    {
+        Main.GetMainInstance().getLogger().info("Generating a cubed list and executing callback foreach!");
+        Vector3 Vx = new Vector3();
+        double xx = this.x;
+        double yy = this.y;
+        double zz = this.z;
+
+        int ystate=0;
+        int zstate=0;
+        int xstate=0;
+
+        for(xx = Math.round(x); (xx != Math.round(Target.x) && xstate!=2);){
+            for(zz = Math.round(z); (zz != Math.round(Target.z) && zstate!=2);)
+            {
+                for(yy = Math.round(y); (yy != Math.round(Target.y) && ystate!=2);)
+                {
+                    Vx = new Vector3(xx,yy,zz);
+                    callback.accept(Vx);
+                    
+                    if(yy > Target.y){
+                        yy-=1.0;
+                        if(yy==Math.round(Target.y) && ystate==0){
+                            ystate++;
+                        }else{
+                            if(ystate==1)ystate++;
+                        }
+                    } else if(yy<Target.y){
+                        yy+=1.0;
+                        if(yy == Math.round(Target.y) && ystate==0){
+                            ystate++;
+                        }else{
+                            if(ystate==1)ystate++;
+                        }
+                    }
+                }
+
+                ystate=0;
+
+                Vx = new Vector3(xx,yy,zz);
+                callback.accept(Vx);
+                Vx.worldName=worldName;
+                Vx.y = y;
+                World www = Main.GetMainInstance().getServer().getWorld(Vx.worldName);
+                Random rnd = new Random();
+                www.playSound(Vx.GetBukkitLocation(www), Sound.ENTITY_ITEM_PICKUP , 1F,rnd.nextFloat() * 2);
+                Vx.y=yy;
+                
+                if(zz>Target.z){
+                    zz-=1.0;
+                    if(zz == Math.round(Target.z) && zstate==0){
+                        zstate++;
+                    }else{
+                        if(zstate==1)zstate++;
+                    }
+                }else if(zz<Target.z){
+                    zz+=1.0;
+                    if(zz == Math.round(Target.z) && zstate==0)zstate++;
+                    else{
+                        if(zstate==1)zstate++;
+                    }
+                }
+
+            }
+
+            zstate=0;
+            Vx=new Vector3(xx,yy,zz);
+            callback.accept(Vx);
+            if(xx>Target.x){
+                xx-=1.0;
+                if(xx == Math.round(Target.x) && xstate==0)xstate++;
+                else{
+                    if(xstate==1)xstate++;
+                }
+            }else if(xx<Target.x){
+                xx+=1.0;
+                if(xx == Math.round(Target.x) && xstate==0)xstate++;
+                else{
+                    if(xstate==1)xstate++;
+                }
+            }
+        }
     }
 
     public List<Vector3> Cube(Vector3 OtherPos) {

@@ -162,6 +162,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                     schema.clear();
                     fx.set("schematicWriter.schematic", schema);
                     xSeq++;
+                    fx.set("schematicWriter.seq", xSeq);
                 }
 
                 Main.GetMainInstance().getLogger().info("On block "+xCurBlock+" of part "+xSeq);

@@ -146,7 +146,7 @@ public class Main extends JavaPlugin {
         ConfigurationSerialization.registerClass(RestoreEntity.class);
         ConfigurationSerialization.registerClass(Vector3.class);
         Main.SetMainInstance(this);
-        getLogger().info("Hello spigot ZNIMod has arrived!");
+        getLogger().info("Hello spigot ZNIMod @ "+Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]+" has arrived!");
         saveDefaultConfig();
 
 

@@ -51,14 +51,14 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
             //List<RestoreBlock> schem = new ArrayList<RestoreBlock>();
             
 
-            FileConfiguration fxx = NullConfig.GetConfig(null);
+            FileConfiguration fxx = NullConfig.GetTempConfig("schematicWriter");
             fxx.set("schematicWriter.current",0);
             fxx.set("schematicWriter.schem", 0);
             fxx.set("schematicWriter.schematic",new ArrayList<RestoreBlock>());
             
             pos1.ForEachCubed(pos2, (val)->{
                 Vector3 vector3 = val;
-                FileConfiguration fx = NullConfig.GetConfig(null);
+                FileConfiguration fx = NullConfig.GetTempConfig("schematicWriter");
                 int xCurBlock = fx.getInt("schematicWriter.current");
                 int xSeq = fx.getInt("schematicWriter.schem");
                 List<RestoreBlock> schema = (List<RestoreBlock>)fx.getList("schematicWriter.schematic");

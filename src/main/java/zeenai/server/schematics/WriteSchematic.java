@@ -67,7 +67,7 @@ public class WriteSchematic implements CommandExecutor {
                         break;
                     }
                     case "v1_16_R3":{
-                        sw = new SchematicWriter_v1_16_r3();
+                        sw = new SchematicWriter_v1_16_r4();
                         break;
                     }
                     case "v1_16_R4":{

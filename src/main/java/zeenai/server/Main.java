@@ -272,7 +272,7 @@ public class Main extends JavaPlugin {
                     }
                 }
             }
-        }, 0L, 150L);
+        }, 0L, 25L);
 
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable(){

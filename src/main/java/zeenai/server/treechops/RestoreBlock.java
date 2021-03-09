@@ -66,8 +66,14 @@ public class RestoreBlock implements ConfigurationSerializable, Cloneable {
         if(mat!=null)
             data.put("mat", mat.name());
 
-        if(blkState!= null)
-            data.put("blockState", BlockStateCodecs.serialize(blkState));
+        try{
+
+            if(blkState!= null)
+                data.put("blockState", BlockStateCodecs.serialize(blkState));
+        }catch(Exception e){
+            Main.GetMainInstance().getLogger().info("Warning: Block at location: "+loc.toString()+" has failed export: "+e.getMessage());
+            return null;
+        }
 
         
         return data;

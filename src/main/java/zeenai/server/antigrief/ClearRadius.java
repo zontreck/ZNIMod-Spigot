@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import zeenai.server.schematics.writer.Vector3;
 import zeenai.server.treechops.RestoreBlock;
 import zeenai.server.treechops.TreeFeller;
 
@@ -31,19 +32,19 @@ public class ClearRadius implements CommandExecutor {
             RestoreBlock rb = new RestoreBlock();
             rb.biome = block.getBiome();
             rb.blkState = block.getState();
-            rb.loc=block.getLocation();
+            rb.loc=new Vector3(block.getLocation());
             rb.mat=block.getType();
             rb.world = block.getWorld().getName();
 
             if(!Healer.GetInstance().backupMap.containsKey(rb.loc))
-                Healer.GetInstance().backupMap.put(rb.loc, rb);
+                Healer.GetInstance().backupMap.put(rb.loc.GetBukkitLocation(block.getWorld()), rb);
 
             RestoreBlock rbAir = new RestoreBlock();
             rbAir.biome=block.getBiome();
-            rbAir.loc = block.getLocation();
+            rbAir.loc = new Vector3(block.getLocation());
             rbAir.mat=Material.AIR;
             rbAir.world=block.getWorld().getName();
-            if(!Healer.GetInstance().Queues.containsKey(rbAir.loc)) Healer.GetInstance().Queues.put(rbAir.loc, rbAir);
+            if(!Healer.GetInstance().Queues.containsKey(rbAir.loc)) Healer.GetInstance().Queues.put(rbAir.loc.GetBukkitLocation(block.getWorld()), rbAir);
         }
 
         return true;

@@ -145,7 +145,7 @@ public class SchematicLoader_v1_16_4 implements SchematicLoader {
                             //Main.GetMainInstance().getLogger().info("AIR RULE: Skipping Air");
                             continue;
                         }
-                        Block currentBlock = restoreBlock.loc.getBlock();
+                        Block currentBlock = restoreBlock.loc.GetBukkitLocation(_W).getBlock();
                         if(currentBlock.getType().name().equals(restoreBlock.mat.name()) &&!RemoveSchematic && !restoreBlock.HasState()){
                             //Main.GetMainInstance().getLogger().info("Block already the same, skipping");
                             continue;
@@ -153,7 +153,8 @@ public class SchematicLoader_v1_16_4 implements SchematicLoader {
                         
                         Vector3 relative = new Vector3(restoreBlock.loc.getX(), restoreBlock.loc.getY(), restoreBlock.loc.getZ());
                         Vector3 absolute = relative.Add(PlayerPosition);
-                        restoreBlock.loc = new Location(_W, absolute.getX(), absolute.getY(), absolute.getZ());
+                        absolute.worldName=_W.getName();
+                        restoreBlock.loc = absolute;
                         if(restoreBlock.mat.name().equalsIgnoreCase("air")){
                             restoreBlock.mat=Material.AIR;
                             restoreBlock.blkState=null;
@@ -170,7 +171,7 @@ public class SchematicLoader_v1_16_4 implements SchematicLoader {
                             }
                         }
     
-                        if(!h.Queues.containsKey(restoreBlock.loc)) h.Queues.put(restoreBlock.loc, restoreBlock);
+                        if(!h.Queues.containsKey(restoreBlock.loc)) h.Queues.put(restoreBlock.loc.GetBukkitLocation(_W), restoreBlock);
                     }
                     lRB=null;
                     fc=null;

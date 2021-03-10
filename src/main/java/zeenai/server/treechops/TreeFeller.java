@@ -26,6 +26,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import net.md_5.bungee.api.ChatColor;
 import zeenai.server.PlayerConfig;
+import zeenai.server.schematics.writer.Vector3;
 
 public class TreeFeller implements Listener, CommandExecutor {
 
@@ -140,7 +141,7 @@ public class TreeFeller implements Listener, CommandExecutor {
 
                     RestoreBlock rb = new RestoreBlock();
                     rb.blkState = b.getState();
-                    rb.loc = b.getLocation();
+                    rb.loc = new Vector3(b.getLocation());
                     rb.world = b.getWorld().getName();
                     rb.biome = b.getBiome();
                     rb.mat = b.getType();
@@ -171,7 +172,7 @@ public class TreeFeller implements Listener, CommandExecutor {
                     
                     RestoreBlock rb = new RestoreBlock();
                     rb.blkState = B.getState();
-                    rb.loc = B.getLocation();
+                    rb.loc = new Vector3(B.getLocation());
                     rb.world = B.getWorld().getName();
                     rb.biome = B.getBiome();
                     rb.mat = B.getType();

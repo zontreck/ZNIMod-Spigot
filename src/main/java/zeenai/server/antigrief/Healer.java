@@ -15,6 +15,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -27,6 +28,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import zeenai.server.Main;
+import zeenai.server.schematics.writer.Vector3;
 import zeenai.server.treechops.RestoreBlock;
 
 public class Healer implements Runnable
@@ -49,7 +51,7 @@ public class Healer implements Runnable
 
     public void RemoveRestoreQueueAt(Location loc){
         for (RestoreBlock restoreBlock : Queues.values()) {
-            if(restoreBlock.loc==loc){
+            if(restoreBlock.loc==new Vector3(loc)){
                 Queues.remove(restoreBlock);
                 return;
             }
@@ -149,7 +151,8 @@ public class Healer implements Runnable
                         return;
                     }
                     RestoreBlock rb = tmp.get(LastBlock);
-                    while(rb.mat.compareTo(Material.AIR)==0 && rb.loc.getBlock().getType().compareTo(Material.AIR)==0){
+                    World _W = Main.GetMainInstance().getServer().getWorld(rb.world);
+                    while(rb.mat.compareTo(Material.AIR)==0 && rb.loc.GetBukkitLocation(_W).getBlock().getType().compareTo(Material.AIR)==0){
                         LastBlock++;
                         if(LastBlock>=Queues.size()){
                             // Increment pass, reset last block
@@ -169,7 +172,7 @@ public class Healer implements Runnable
                     //Main.GetMainInstance().getLogger().info("Restoring block..");
                     // Restore the block
                     Random rnd = new Random();
-                    Block b = rb.loc.getBlock();
+                    Block b = rb.loc.GetBukkitLocation(_W).getBlock();
 
                     if(rb.mat.compareTo(b.getType())==0){
                         LastBlock++;
@@ -201,7 +204,8 @@ public class Healer implements Runnable
                 // This will run over the blocks in the list and compare. If something does not match, then pass 1 will be scheduled again but only for the blocks that do not match
                 for (int i = 0; i < Queues.size(); i++) {
                     RestoreBlock rb = tmp.get(i);
-                    Block current = rb.loc.getBlock();
+                    World _W = Main.GetMainInstance().getServer().getWorld(rb.world);
+                    Block current = rb.loc.GetBukkitLocation(_W).getBlock();
                     Chunk c = current.getChunk();
                     if(!c.isLoaded()){
                         while(!c.isLoaded()){

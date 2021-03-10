@@ -97,7 +97,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
                         rb.blkState=null;
                 
                         Vector3 relative = vector3.Sub(pos1);
-                        rb.loc = relative.GetBukkitLocation(b.getWorld());
+                        rb.loc = relative;
                         rb.mat=Material.AIR;
                         rb.world = b.getWorld().getName();
                         rb.relative=pos1;
@@ -138,7 +138,7 @@ public class SchematicWriter_v1_16_r4 implements SchematicWriter {
 
                 
                 Vector3 relative = vector3.Sub(pos1);
-                rb.loc = relative.GetBukkitLocation(b.getWorld());
+                rb.loc = relative;
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
                 rb.relative = pos1;

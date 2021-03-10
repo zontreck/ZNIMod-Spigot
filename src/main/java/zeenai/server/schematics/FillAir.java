@@ -42,14 +42,14 @@ public class FillAir implements CommandExecutor {
             rb.mat = Material.AIR;
             Location L = new Location(p.getWorld(), val.getX(), val.getY(), val.getZ());
             rb.blkState = null;
-            rb.loc = L;
+            rb.loc = new Vector3(L);
             rb.world = p.getWorld().getName();
             rb.biome = L.getBlock().getBiome();
 
             RestoreBlock orig = new RestoreBlock();
             orig.biome = rb.biome;
             orig.blkState = L.getBlock().getState();
-            orig.loc=L;
+            orig.loc=new Vector3(L);
             orig.mat=L.getBlock().getType();
             orig.world=rb.world;
 

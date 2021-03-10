@@ -45,6 +45,9 @@ public class Vector3 implements ConfigurationSerializable, Comparable, Serializa
         this.x = Math.round(x.getX());
         this.y = Math.round(x.getY());
         this.z = Math.round(x.getZ());
+        this.worldName = x.getWorld().getName();
+        this.pitch = x.getPitch();
+        this.yaw = x.getYaw();
     }
 
     public Vector3(double x, double y, double z) {

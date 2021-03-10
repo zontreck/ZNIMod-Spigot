@@ -77,17 +77,18 @@ public class SchematicLoader_v1_15_2 implements SchematicLoader {
                     World _W = Bukkit.getWorld(WorldName);
                     for (RestoreBlock restoreBlock : lRB) {
                         if(restoreBlock.mat==Material.AIR && NullConfig.GetTempConfig(CurrentSender.getName()).getBoolean("IncludeAir")==false && NullConfig.GetTempConfig(CurrentSender.getName()).getBoolean("SetToAir")==false) continue;
-                        Block currentBlock = restoreBlock.loc.getBlock();
+                        Block currentBlock = restoreBlock.loc.GetBukkitLocation(_W).getBlock();
                         if(currentBlock.getType().name() == restoreBlock.mat.name() &&!RemoveSchematic && !restoreBlock.HasState())continue;
                         
                         Vector3 relative = new Vector3(restoreBlock.loc.getX(), restoreBlock.loc.getY(), restoreBlock.loc.getZ());
                         Vector3 absolute = relative.Add(PlayerPosition);
-                        restoreBlock.loc = new Location(_W, absolute.getX(), absolute.getY(), absolute.getZ());
+                        absolute.worldName=_W.getName();
+                        restoreBlock.loc = absolute;
                         // Begin process of bringing in the schematic
                         if(RemoveSchematic) restoreBlock.mat = Material.AIR;
                         // Now, add the blocks to the appropriate lists
     
-                        if(!h.Queues.containsKey(restoreBlock.loc)) h.Queues.put(restoreBlock.loc, restoreBlock);
+                        if(!h.Queues.containsKey(restoreBlock.loc)) h.Queues.put(restoreBlock.loc.GetBukkitLocation(_W), restoreBlock);
                     }
                     lRB=null;
                     //CurrentPlayer.sendMessage(ChatColor.GREEN+"Schem3 added successfully to Heal Queue");

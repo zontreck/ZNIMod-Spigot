@@ -17,7 +17,7 @@ import zeenai.server.schematics.writer.Vector3;
 
 
 public class RestoreBlock implements ConfigurationSerializable, Cloneable {
-    public Location loc;
+    public Vector3 loc;
     public BlockState blkState;
     public String world;
     public Biome biome;
@@ -38,7 +38,7 @@ public class RestoreBlock implements ConfigurationSerializable, Cloneable {
     public RestoreBlock() {
     }
 
-    private RestoreBlock(Location l, String w, Biome b, Material m, String state) {
+    private RestoreBlock(Vector3 l, String w, Biome b, Material m, String state) {
         loc = l;
         world = w;
 
@@ -74,7 +74,7 @@ public class RestoreBlock implements ConfigurationSerializable, Cloneable {
             if(blkState!= null)
                 data.put("blockState", BlockStateCodecs.serialize(blkState));
         }catch(Exception e){
-            Main.GetMainInstance().getLogger().info("Warning: Block at location: "+new Vector3(loc).Add(relative).ToString()+" has failed export: "+e.getMessage()+"\nBlock Material: "+mat.name());
+            Main.GetMainInstance().getLogger().info("Warning: Block at location: "+loc.Add(relative).ToString()+" has failed export: "+e.getMessage()+"\nBlock Material: "+mat.name());
             return null;
         }
 
@@ -89,15 +89,16 @@ public class RestoreBlock implements ConfigurationSerializable, Cloneable {
             _biome = Biome.valueOf((String) mp.get("biome"));
         }
 
-        return new RestoreBlock((Location) mp.get("loc"), (String) mp.get("world"),
+        return new RestoreBlock((Vector3) mp.get("loc"), (String) mp.get("world"),
                 _biome, Material.getMaterial((String) mp.get("mat")), blk);
     }
 
     public void ApplyState() {
         // This should be called after the block's type is set
         if(blkState==null){
-
-            blkState = loc.getBlock().getState();
+            Location locx = new Location(Main.GetMainInstance().getServer().getWorld(world), loc.x, loc.y, loc.z);
+            
+            blkState = locx.getBlock().getState();
 
             BlockStateCodecs.deserialize(blkState, state);
         }

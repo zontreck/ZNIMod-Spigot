@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityBreakDoorEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 import zeenai.server.Main;
+import zeenai.server.schematics.writer.Vector3;
 import zeenai.server.treechops.RestoreBlock;
 import zeenai.server.treechops.TreeFeller;
 
@@ -50,11 +51,11 @@ public class BlockIgniteListener implements Listener {
                 RestoreBlock rb = new RestoreBlock();
                 rb.biome = b.getBiome();
                 rb.blkState = b.getState();
-                rb.loc = b.getLocation();
+                rb.loc = new Vector3(b.getLocation());
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
                 Healer.GetInstance().TNT=true;
-                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc, rb);
+                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(rb.world)), rb);
             }
         }
     }
@@ -84,11 +85,11 @@ public class BlockIgniteListener implements Listener {
                 RestoreBlock rb = new RestoreBlock();
                 rb.biome = b.getBiome();
                 rb.blkState = b.getState();
-                rb.loc = b.getLocation();
+                rb.loc = new Vector3(b.getLocation());
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
                 Healer.GetInstance().TNT=true;
-                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc, rb);
+                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(rb.world)), rb);
             }
         }
     }
@@ -121,10 +122,10 @@ public class BlockIgniteListener implements Listener {
                 RestoreBlock rb = new RestoreBlock();
                 rb.biome = b.getBiome();
                 rb.blkState = b.getState();
-                rb.loc = b.getLocation();
+                rb.loc = new Vector3(b.getLocation());
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
-                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc, rb);
+                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(rb.world)), rb);
             }
         }
     }

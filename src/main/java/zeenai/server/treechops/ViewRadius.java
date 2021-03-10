@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import zeenai.server.Main;
 import zeenai.server.PlayerConfig;
+import zeenai.server.schematics.writer.Vector3;
 
 
 public class ViewRadius implements CommandExecutor {
@@ -39,7 +40,7 @@ public class ViewRadius implements CommandExecutor {
                 
                 RestoreBlock rb = new RestoreBlock();
                 rb.blkState = b.getState();
-                rb.loc = b.getLocation();
+                rb.loc = new Vector3(b.getLocation());
                 rb.world = b.getWorld().getName();
                 rb.biome = b.getBiome();
                 rb.mat = b.getType();

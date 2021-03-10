@@ -64,7 +64,7 @@ public class SchematicWriter_v1_15_r1 implements SchematicWriter {
                     if(fc.getBoolean("IncludeAir")){
                         rb.biome=null;
                         rb.blkState=null;
-                        rb.loc=L;
+                        rb.loc= new Vector3(L);
                         rb.mat=Material.AIR;
                         rb.world = b.getWorld().getName();
                         schem.add(rb);
@@ -104,7 +104,7 @@ public class SchematicWriter_v1_15_r1 implements SchematicWriter {
 
                 
                 Vector3 relative = vector3.Sub(pos1);
-                rb.loc = relative.GetBukkitLocation(b.getWorld());
+                rb.loc = relative;
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
                 

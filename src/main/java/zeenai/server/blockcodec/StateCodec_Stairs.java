@@ -60,12 +60,15 @@ public class StateCodec_Stairs implements BlockStateCodec, Serializable {
         public String Shape;
         public String Facing;
         public String Half;
+        public boolean Waterlogged;
 
         public String AsString(){
             StringBuilder sb = new StringBuilder();
             sb.append("\nShape: "+Shape);
             sb.append("\nFacing: "+Facing);
             sb.append("\nHalf: "+Half);
+            sb.append("\nWaterlogged: "+Waterlogged);
+
 
             return sb.toString();
         }
@@ -93,6 +96,7 @@ public class StateCodec_Stairs implements BlockStateCodec, Serializable {
 
                 dat.Facing = sig.getFacing().name();
                 dat.Half = sig.getHalf().name();
+                dat.Waterlogged = sig.isWaterlogged();
     
                 try {
                     ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -167,6 +171,7 @@ public class StateCodec_Stairs implements BlockStateCodec, Serializable {
                 dir.setShape(Stairs.Shape.valueOf(dat.Shape));
                 dir.setFacing(BlockFace.valueOf(dat.Facing));
                 dir.setHalf(Bisected.Half.valueOf(dat.Half));
+                dir.setWaterlogged(dat.Waterlogged);
                 state.setBlockData(dir);
 
 

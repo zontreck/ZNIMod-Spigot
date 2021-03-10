@@ -32,7 +32,12 @@ public class StateCodec_Rotatable implements BlockStateCodec, Serializable {
     public Material[] getApplicableMaterials() {
         return new Material[] { 
             Material.ZOMBIE_HEAD, 
-            Material.BLACK_BED,Material.CREEPER_HEAD,Material.DRAGON_HEAD,Material.PLAYER_HEAD, Material.WITHER_SKELETON_SKULL
+            Material.BLACK_BED,
+            Material.CREEPER_HEAD,
+            Material.DRAGON_HEAD,
+            Material.PLAYER_HEAD, 
+            Material.WITHER_SKELETON_SKULL,
+            Material.SKELETON_SKULL
         };
     }
 

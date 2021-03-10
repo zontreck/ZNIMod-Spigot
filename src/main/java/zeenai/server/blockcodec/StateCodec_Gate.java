@@ -11,19 +11,17 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.type.Fence;
-import org.bukkit.block.data.type.GlassPane;
+import org.bukkit.block.data.type.Gate;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import zeenai.server.Main;
 import zeenai.server.NullConfig;
 
-public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
+public class StateCodec_Gate implements BlockStateCodec, Serializable {
 
     /**
      *
@@ -33,38 +31,37 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
     @Override
     public Material[] getApplicableMaterials() {
         return new Material[] { 
-            Material.BLACK_STAINED_GLASS_PANE, Material.BLUE_STAINED_GLASS_PANE, Material.BROWN_STAINED_GLASS_PANE,
-            Material.CYAN_STAINED_GLASS_PANE, Material.GRAY_STAINED_GLASS_PANE, Material.GREEN_STAINED_GLASS_PANE,
-            Material.LIGHT_BLUE_STAINED_GLASS_PANE, Material.LIGHT_GRAY_STAINED_GLASS_PANE, Material.LIME_STAINED_GLASS_PANE,
-            Material.MAGENTA_STAINED_GLASS_PANE, Material.ORANGE_STAINED_GLASS_PANE, Material.PINK_STAINED_GLASS_PANE,
-            Material.PURPLE_STAINED_GLASS_PANE, Material.RED_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE,
-            Material.YELLOW_STAINED_GLASS_PANE
+            Material.ACACIA_FENCE_GATE, Material.BIRCH_FENCE_GATE, Material.CRIMSON_FENCE_GATE, Material.DARK_OAK_FENCE_GATE, Material.JUNGLE_FENCE_GATE, Material.OAK_FENCE_GATE, Material.SPRUCE_FENCE_GATE, Material.WARPED_FENCE_GATE
         };
     }
 
     private List<Material> FriendlyList;
 
-    public StateCodec_GlassPane(){
+    public StateCodec_Gate(){
         FriendlyList=new ArrayList<Material>();
         for (Material material : getApplicableMaterials()) {
             FriendlyList.add(material);
         }
     }
 
-    private class GlassPaneData implements Serializable {
+    private class GateData implements Serializable {
         /**
          *
          */
         private static final long serialVersionUID = 189543875L;
-        public List<String> ActiveFaces;
-        public boolean waterlogged;
+        public boolean InWall;
+        public boolean Open;
+        public boolean Powered;
+        public String Facing;
+        
 
         public String AsString(){
             StringBuilder sb = new StringBuilder();
-            for (String face : ActiveFaces) {
-                sb.append("\nActive Face: "+face);
-            }
-            sb.append("\nWaterlogged: "+waterlogged);
+            sb.append("InWall: "+InWall);
+            sb.append("Open: "+Open);
+            sb.append("Powered: "+Powered);
+            sb.append("Facing: "+Facing);
+
 
             return sb.toString();
         }
@@ -74,22 +71,21 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
     public String serialize(BlockState state) {
         if (FriendlyList.contains(state.getType())) {
 
-            GlassPane sig = (GlassPane)state.getBlockData();
+            Gate sig = (Gate)state.getBlockData();
             
-            Set<BlockFace> fce = sig.getFaces();
 
             
             
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            GlassPaneData dat = new GlassPaneData();
-            dat.ActiveFaces = new ArrayList<String>();
-            dat.waterlogged = sig.isWaterlogged();
-            
-            for (BlockFace blockFace : fce) {
-                dat.ActiveFaces.add(blockFace.name());
-            }
+            GateData dat = new GateData();
 
+            dat.InWall = sig.isInWall();
+            dat.Open = sig.isOpen();
+            dat.Powered=sig.isPowered();
+            dat.Facing = sig.getFacing().name();
+            
+            
 
             try {
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -111,9 +107,9 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
             if(FriendlyList.contains(state.getType())){
                 File TMP=null;
                 try {
-                    TMP = File.createTempFile("state", "debug_glasspane");
-                    NullConfig.GetTempConfig("glasspane_debug").set("state", state);
-                    NullConfig.SaveTempConfig(TMP, "glasspane_debug");
+                    TMP = File.createTempFile("state", "debug_gate");
+                    NullConfig.GetTempConfig("gate_debug").set("state", state);
+                    NullConfig.SaveTempConfig(TMP, "gate_debug");
                     FileReader FR = new FileReader(TMP);
                     BufferedReader br = new BufferedReader(FR);
                     String contents = "";
@@ -121,7 +117,7 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
                     while((cur = br.readLine())!=null){
                         contents+=cur+"\n";
                     }
-                    Main.GetMainInstance().getLogger().info("ERROR\n\n: Below is the raw block data for glasspane\n\n"+contents);
+                    Main.GetMainInstance().getLogger().info("ERROR\n\n: Below is the raw block data for gate\n\n"+contents);
 
                     br.close();
                     FR.close();
@@ -136,18 +132,18 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
 
     @Override
     public void deserialize(BlockState state, String conf) {
-        Main.GetMainInstance().getLogger().info("Deserialize orientable called");
+        Main.GetMainInstance().getLogger().info("Deserialize gate called");
         if(FriendlyList.contains(state.getType())){
-            Main.GetMainInstance().getLogger().info("Deserialize orientable called- is instanceof");
-            GlassPane dir = (GlassPane)state.getBlockData();
-            GlassPaneData dat = new GlassPaneData();
+            Main.GetMainInstance().getLogger().info("Deserialize gate called- is instanceof");
+            Gate dir = (Gate)state.getBlockData();
+            GateData dat = new GateData();
 
             ByteArrayInputStream bais = new ByteArrayInputStream(Base64Coder.decodeLines(conf));
             ObjectInputStream ois;
             try {
                 ois = new ObjectInputStream(bais);
 
-                dat = (GlassPaneData)ois.readObject();
+                dat = (GateData)ois.readObject();
     
                 ois.close();
             } catch (IOException e1) {
@@ -160,10 +156,10 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
 
             Main.GetMainInstance().getLogger().info("Deserialized!\n\n"+dat.AsString());
             if(conf != null) {
-                for (String face : dat.ActiveFaces) {
-                    dir.setFace(BlockFace.valueOf(face), true);
-                }
-                dir.setWaterlogged(dat.waterlogged);
+                dir.setInWall(dat.InWall);
+                dir.setOpen(dat.Open);
+                dir.setPowered(dat.Powered);
+                dir.setFacing(BlockFace.valueOf(dat.Facing));
                 state.setBlockData(dir);
 
 
@@ -190,7 +186,7 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
 
     @Override
     public String getID() {
-        return "Fence";
+        return "Gate";
     }
     
 }

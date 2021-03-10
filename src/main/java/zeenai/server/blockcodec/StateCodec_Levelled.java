@@ -16,14 +16,14 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Levelled;
 import org.bukkit.block.data.type.Fence;
-import org.bukkit.block.data.type.GlassPane;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import zeenai.server.Main;
 import zeenai.server.NullConfig;
 
-public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
+public class StateCodec_Levelled implements BlockStateCodec, Serializable {
 
     /**
      *
@@ -33,38 +33,29 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
     @Override
     public Material[] getApplicableMaterials() {
         return new Material[] { 
-            Material.BLACK_STAINED_GLASS_PANE, Material.BLUE_STAINED_GLASS_PANE, Material.BROWN_STAINED_GLASS_PANE,
-            Material.CYAN_STAINED_GLASS_PANE, Material.GRAY_STAINED_GLASS_PANE, Material.GREEN_STAINED_GLASS_PANE,
-            Material.LIGHT_BLUE_STAINED_GLASS_PANE, Material.LIGHT_GRAY_STAINED_GLASS_PANE, Material.LIME_STAINED_GLASS_PANE,
-            Material.MAGENTA_STAINED_GLASS_PANE, Material.ORANGE_STAINED_GLASS_PANE, Material.PINK_STAINED_GLASS_PANE,
-            Material.PURPLE_STAINED_GLASS_PANE, Material.RED_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE,
-            Material.YELLOW_STAINED_GLASS_PANE
+            Material.WATER, Material.LAVA, Material.CAULDRON, Material.COMPOSTER
         };
     }
 
     private List<Material> FriendlyList;
 
-    public StateCodec_GlassPane(){
+    public StateCodec_Levelled(){
         FriendlyList=new ArrayList<Material>();
         for (Material material : getApplicableMaterials()) {
             FriendlyList.add(material);
         }
     }
 
-    private class GlassPaneData implements Serializable {
+    private class LevelledData implements Serializable {
         /**
          *
          */
         private static final long serialVersionUID = 189543875L;
-        public List<String> ActiveFaces;
-        public boolean waterlogged;
+        public int Level;
 
         public String AsString(){
             StringBuilder sb = new StringBuilder();
-            for (String face : ActiveFaces) {
-                sb.append("\nActive Face: "+face);
-            }
-            sb.append("\nWaterlogged: "+waterlogged);
+            sb.append("Level: "+Level);
 
             return sb.toString();
         }
@@ -74,21 +65,15 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
     public String serialize(BlockState state) {
         if (FriendlyList.contains(state.getType())) {
 
-            GlassPane sig = (GlassPane)state.getBlockData();
+            Levelled sig = (Levelled)state.getBlockData();
             
-            Set<BlockFace> fce = sig.getFaces();
 
             
             
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            GlassPaneData dat = new GlassPaneData();
-            dat.ActiveFaces = new ArrayList<String>();
-            dat.waterlogged = sig.isWaterlogged();
-            
-            for (BlockFace blockFace : fce) {
-                dat.ActiveFaces.add(blockFace.name());
-            }
+            LevelledData dat = new LevelledData();
+            dat.Level = sig.getLevel();
 
 
             try {
@@ -111,9 +96,9 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
             if(FriendlyList.contains(state.getType())){
                 File TMP=null;
                 try {
-                    TMP = File.createTempFile("state", "debug_glasspane");
-                    NullConfig.GetTempConfig("glasspane_debug").set("state", state);
-                    NullConfig.SaveTempConfig(TMP, "glasspane_debug");
+                    TMP = File.createTempFile("state", "debug_levelled");
+                    NullConfig.GetTempConfig("levelled_debug").set("state", state);
+                    NullConfig.SaveTempConfig(TMP, "levelled_debug");
                     FileReader FR = new FileReader(TMP);
                     BufferedReader br = new BufferedReader(FR);
                     String contents = "";
@@ -121,7 +106,7 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
                     while((cur = br.readLine())!=null){
                         contents+=cur+"\n";
                     }
-                    Main.GetMainInstance().getLogger().info("ERROR\n\n: Below is the raw block data for glasspane\n\n"+contents);
+                    Main.GetMainInstance().getLogger().info("ERROR\n\n: Below is the raw block data for levelled\n\n"+contents);
 
                     br.close();
                     FR.close();
@@ -136,18 +121,18 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
 
     @Override
     public void deserialize(BlockState state, String conf) {
-        Main.GetMainInstance().getLogger().info("Deserialize orientable called");
+        Main.GetMainInstance().getLogger().info("Deserialize levelled called");
         if(FriendlyList.contains(state.getType())){
-            Main.GetMainInstance().getLogger().info("Deserialize orientable called- is instanceof");
-            GlassPane dir = (GlassPane)state.getBlockData();
-            GlassPaneData dat = new GlassPaneData();
+            Main.GetMainInstance().getLogger().info("Deserialize levelled called- is instanceof");
+            Levelled dir = (Levelled)state.getBlockData();
+            LevelledData dat = new LevelledData();
 
             ByteArrayInputStream bais = new ByteArrayInputStream(Base64Coder.decodeLines(conf));
             ObjectInputStream ois;
             try {
                 ois = new ObjectInputStream(bais);
 
-                dat = (GlassPaneData)ois.readObject();
+                dat = (LevelledData)ois.readObject();
     
                 ois.close();
             } catch (IOException e1) {
@@ -160,10 +145,7 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
 
             Main.GetMainInstance().getLogger().info("Deserialized!\n\n"+dat.AsString());
             if(conf != null) {
-                for (String face : dat.ActiveFaces) {
-                    dir.setFace(BlockFace.valueOf(face), true);
-                }
-                dir.setWaterlogged(dat.waterlogged);
+                dir.setLevel(dat.Level);
                 state.setBlockData(dir);
 
 
@@ -190,7 +172,7 @@ public class StateCodec_GlassPane implements BlockStateCodec, Serializable {
 
     @Override
     public String getID() {
-        return "Fence";
+        return "Levelled";
     }
     
 }

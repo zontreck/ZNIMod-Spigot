@@ -56,6 +56,7 @@ public class StateCodec_Directional implements BlockStateCodec, Serializable {
                 Material.SKELETON_WALL_SKULL,
                 Material.STONECUTTER,
                 Material.WALL_TORCH,
+                Material.SOUL_WALL_TORCH,
                 Material.REDSTONE_WALL_TORCH,
                 Material.WHITE_GLAZED_TERRACOTTA,
                 Material.WITHER_SKELETON_WALL_SKULL,
@@ -96,6 +97,7 @@ public class StateCodec_Directional implements BlockStateCodec, Serializable {
             String direction= "";
             Directional sig = (Directional)state.getBlockData();
             direction = sig.getFacing().name();
+            
             
             
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

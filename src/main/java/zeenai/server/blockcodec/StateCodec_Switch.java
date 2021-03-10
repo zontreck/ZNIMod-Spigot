@@ -15,6 +15,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.FaceAttachable.AttachedFace;
 import org.bukkit.block.data.type.Switch;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
@@ -75,7 +76,7 @@ public class StateCodec_Switch implements BlockStateCodec, Serializable {
 
             SwitchData dat = new SwitchData();
             dat.Facing = sig.getFacing().name();
-            dat.Face = sig.getFace().name();
+            dat.Face = sig.getAttachedFace().name();
             dat.Power = sig.isPowered();
 
             try {
@@ -148,7 +149,7 @@ public class StateCodec_Switch implements BlockStateCodec, Serializable {
             Main.GetMainInstance().getLogger().info("Deserialized!\n\n"+dat.AsString());
             if(conf != null) {
 
-                dir.setFace(Switch.Face.valueOf(dat.Face));
+                dir.setAttachedFace( AttachedFace.valueOf(dat.Face));
                 dir.setFacing(BlockFace.valueOf(dat.Facing));
                 dir.setPowered(dat.Power);
                 state.setBlockData(dir);

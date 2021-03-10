@@ -57,10 +57,13 @@ public class StateCodec_Slabs implements BlockStateCodec, Serializable {
          */
         private static final long serialVersionUID = 189543875L;
         public String SlabType;
+        public boolean Waterlogged;
 
         public String AsString(){
             StringBuilder sb = new StringBuilder();
             sb.append("\nAxis: "+SlabType);
+            sb.append("\nWaterlogged: "+Waterlogged);
+
 
             return sb.toString();
         }
@@ -82,6 +85,7 @@ public class StateCodec_Slabs implements BlockStateCodec, Serializable {
             if(direction!= ""){
                 dat.SlabType = direction;
             }
+            dat.Waterlogged = sig.isWaterlogged();
 
             try {
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -104,8 +108,8 @@ public class StateCodec_Slabs implements BlockStateCodec, Serializable {
                 File TMP=null;
                 try {
                     TMP = File.createTempFile("state", "debug_slabs");
-                    NullConfig.GetTempConfig("orientable_debug").set("state", state);
-                    NullConfig.SaveTempConfig(TMP, "orientable_debug");
+                    NullConfig.GetTempConfig("slabs_debug").set("state", state);
+                    NullConfig.SaveTempConfig(TMP, "slabs_debug");
                     FileReader FR = new FileReader(TMP);
                     BufferedReader br = new BufferedReader(FR);
                     String contents = "";
@@ -113,7 +117,7 @@ public class StateCodec_Slabs implements BlockStateCodec, Serializable {
                     while((cur = br.readLine())!=null){
                         contents+=cur+"\n";
                     }
-                    Main.GetMainInstance().getLogger().info("ERROR\n\n: Below is the raw block data for orientable\n\n"+contents);
+                    Main.GetMainInstance().getLogger().info("ERROR\n\n: Below is the raw block data for slabs\n\n"+contents);
 
                     br.close();
                     FR.close();
@@ -128,9 +132,9 @@ public class StateCodec_Slabs implements BlockStateCodec, Serializable {
 
     @Override
     public void deserialize(BlockState state, String conf) {
-        Main.GetMainInstance().getLogger().info("Deserialize orientable called");
+        Main.GetMainInstance().getLogger().info("Deserialize slabs called");
         if(FriendlyList.contains(state.getType())){
-            Main.GetMainInstance().getLogger().info("Deserialize orientable called- is instanceof");
+            Main.GetMainInstance().getLogger().info("Deserialize slabs called- is instanceof");
             Slab dir = (Slab)state.getBlockData();
             SlabsData dat = new SlabsData();
 
@@ -154,6 +158,7 @@ public class StateCodec_Slabs implements BlockStateCodec, Serializable {
             if(conf != null) {
 
                 dir.setType(Slab.Type.valueOf(dat.SlabType));
+                dir.setWaterlogged(dat.Waterlogged);
                 state.setBlockData(dir);
 
 

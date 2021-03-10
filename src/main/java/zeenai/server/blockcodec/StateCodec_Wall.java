@@ -47,6 +47,8 @@ public class StateCodec_Wall implements BlockStateCodec, Serializable
         public boolean isUp;
         public List<String> ActiveFaces;
         public List<String> heights;
+        public boolean Waterlogged;
+
 
         public String AsString(){
             StringBuilder sb = new StringBuilder();
@@ -54,6 +56,9 @@ public class StateCodec_Wall implements BlockStateCodec, Serializable
                 sb.append("\nActive Face: "+face);
             }
             sb.append("\nIs Up: "+isUp);
+            sb.append("\nWaterlogged: "+Waterlogged);
+
+
 
             return sb.toString();
         }
@@ -75,7 +80,7 @@ public class StateCodec_Wall implements BlockStateCodec, Serializable
         if (FriendlyList.contains(state.getType())) {
 
             Wall sig = (Wall)state.getBlockData();
-
+            
             BlockFace[] facess = new BlockFace[] {
                 BlockFace.NORTH, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH
             };
@@ -91,6 +96,7 @@ public class StateCodec_Wall implements BlockStateCodec, Serializable
                 dat.heights.add(sig.getHeight(blockFace).name());
             }
             dat.isUp = sig.isUp();
+            dat.Waterlogged = sig.isWaterlogged();
 
 
             try {
@@ -167,6 +173,7 @@ public class StateCodec_Wall implements BlockStateCodec, Serializable
                     dir.setHeight(BlockFace.valueOf(face), Wall.Height.valueOf(dat.heights.get(dat.ActiveFaces.indexOf(face))));
                 }
                 dir.setUp(dat.isUp);
+                dir.setWaterlogged(dat.Waterlogged);
                 state.setBlockData(dir);
 
 

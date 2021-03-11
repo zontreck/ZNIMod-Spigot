@@ -93,6 +93,7 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                 Map<Vector3, Entity> allEntities = new HashMap<Vector3, Entity>();
                 while(true){
                     File X = new File(f+"."+Seq+".schem3");
+                    Main.GetMainInstance().getServer().broadcast("Now loading: "+X.getName(), "");
                     if(X.exists()){
                         // continue;
                     }else{
@@ -110,6 +111,7 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                     List<RestoreBlock> lRB = (List<RestoreBlock>)fc.getList("schematic.blocks");
 
 
+                    Main.GetMainInstance().getServer().broadcast("Loaded: "+X.getName(), "");
                     //fc=null;
                     Healer h = Healer.GetInstance();
                     if(Seq==0){

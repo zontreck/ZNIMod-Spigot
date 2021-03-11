@@ -141,7 +141,7 @@ public class Healer implements Runnable
 
             if(Pass==1){
 
-                if(Instant.now().toEpochMilli()+Seconds>LastRestoreTime){
+                if(Instant.now().toEpochMilli()+Seconds>=LastRestoreTime){
                     LastRestoreTime = Instant.now().toEpochMilli()+ Seconds;
                     // Heal a block
                     if(LastBlock>=Queues.size()){

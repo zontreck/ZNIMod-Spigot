@@ -36,6 +36,10 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
     private String WorldName;
     private boolean RemoveSchematic;
 
+    private boolean loadStates=false;
+    private boolean repairMode=false;
+    private boolean air = false;
+
     @Override
     public void SetUndo(boolean undo){
         RemoveSchematic=undo;
@@ -142,11 +146,17 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                     }
                     //CurrentPlayer.sendMessage(ChatColor.AQUA+"Stand by.. Importing schem3");
                     for (RestoreBlock restoreBlock : lRB) {
-                        if(restoreBlock.mat == Material.AIR && !(NullConfig.GetTempConfig(CurrentSender.getName()).getBoolean("IncludeAir")) && !(NullConfig.GetTempConfig(CurrentSender.getName()).getBoolean("SetToAir"))) {
+                        if(restoreBlock.mat == Material.AIR && !air) {
                             //Main.GetMainInstance().getLogger().info("AIR RULE: Skipping Air");
                             continue;
                         }
                         Block currentBlock = restoreBlock.loc.GetBukkitLocation(_W).getBlock();
+                        if(repairMode && currentBlock.getType() == restoreBlock.mat){
+                            if(!restoreBlock.HasState()){
+                                continue;
+                            }
+                        }
+
                         if(currentBlock.getType().name().equals(restoreBlock.mat.name()) &&!RemoveSchematic && !restoreBlock.HasState()){
                             //Main.GetMainInstance().getLogger().info("Block already the same, skipping");
                             continue;
@@ -158,6 +168,9 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                         restoreBlock.loc = absolute;
                         if(restoreBlock.mat.name().equalsIgnoreCase("air")){
                             restoreBlock.mat=Material.AIR;
+                            restoreBlock.blkState=null;
+                        }
+                        if(!loadStates){
                             restoreBlock.blkState=null;
                         }
                         // Begin process of bringing in the schematic
@@ -216,6 +229,26 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
     @Override
     public void SetPlayer(CommandSender sender) {
         CurrentSender = sender;
+    }
+
+
+    @Override
+    public void SetLoadStates(boolean useStates) {
+        this.loadStates=useStates;
+        
+    }
+
+
+    @Override
+    public void SetRepairMode(boolean repair) {
+        this.repairMode=repair;
+        
+    }
+
+
+    @Override
+    public void SetIncludeAir(boolean air) {
+        this.air=air;
     }
     
 }

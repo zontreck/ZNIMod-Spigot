@@ -25,21 +25,24 @@ public class LoadSchematic implements CommandExecutor {
              String[] args)
     {
         String schemName = "";
-        
-        for (String string : args) {
-            Main.GetMainInstance().getLogger().info("Argument: "+string);
-            if(string.compareToIgnoreCase("-a")==0){
-                Main.GetMainInstance().getLogger().info("Including air!");
-                NullConfig.GetTempConfig(sender.getName()).set("IncludeAir",true);
-                continue;
-            } else if(string.compareToIgnoreCase("-e")==0){
-                Main.GetMainInstance().getLogger().info("Excluding air!");
-                NullConfig.GetTempConfig(sender.getName()).set("IncludeAir",false);
-                continue;
-            }
-            schemName+=string;
-        }
-        if(!NullConfig.GetTempConfig(sender.getName()).contains("IncludeAir"))NullConfig.GetTempConfig(sender.getName()).set("IncludeAir",true);
+        // arg[0] = air
+        // arg[1] = states
+        // arg[2] = repair
+        // arg[3] = schematic name/path
+        boolean air=true;
+        boolean states=true;
+        boolean repair=false;
+        if(args[0].toLowerCase() == "y"){
+            air=true;
+        }else air=false;
+
+        if(args[1].toLowerCase() == "y")states=true;
+        else states=false;
+
+        if(args[2].toLowerCase() == "y")repair=true;
+        else repair=false;
+
+        schemName = args[3];
         
         
         try{
@@ -82,6 +85,9 @@ public class LoadSchematic implements CommandExecutor {
                 }
             }
             SL.SetPlayer(sender);
+            SL.SetLoadStates(states);
+            SL.SetRepairMode(repair);
+            SL.SetIncludeAir(air);
             SL.LoadSchematic(f);
             sender.sendMessage("Preparing to modify "+SL.GetBlockCount()+" blocks");
             

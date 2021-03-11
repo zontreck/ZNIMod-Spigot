@@ -17,4 +17,7 @@ public interface SchematicLoader{
     public int GetBlockCount();
     public List<RestoreBlock> GetBlocks();
     public void SetUndo(boolean undo);
+    public void SetLoadStates(boolean useStates);
+    public void SetRepairMode(boolean repair);
+    public void SetIncludeAir(boolean air);
 }

@@ -216,5 +216,26 @@ public class SchematicLoader_v1_16_4 implements SchematicLoader {
     public void SetPlayer(CommandSender sender) {
         CurrentSender = sender;
     }
+
+
+    @Override
+    public void SetLoadStates(boolean useStates) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public void SetRepairMode(boolean repair) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public void SetIncludeAir(boolean air) {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

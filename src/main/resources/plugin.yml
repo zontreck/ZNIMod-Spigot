@@ -237,7 +237,7 @@ commands:
     usage: /saveschem [string:SchemName]
   loadschem3:
     description: Loads a schematic v3
-    usage: /loadschem3 [-a/-e] [string:SchemName]
+    usage: /loadschem3 [y/n:air] [y/n:states] [y/n:repair] [string:SchemName]
   clearqueue:
     description: Clears queue
     usage: /clearqueue

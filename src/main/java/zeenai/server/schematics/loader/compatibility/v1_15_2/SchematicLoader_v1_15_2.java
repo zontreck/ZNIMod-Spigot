@@ -88,7 +88,7 @@ public class SchematicLoader_v1_15_2 implements SchematicLoader {
                         if(RemoveSchematic) restoreBlock.mat = Material.AIR;
                         // Now, add the blocks to the appropriate lists
     
-                        if(!h.Queues.containsKey(restoreBlock.loc)) h.Queues.put(restoreBlock.loc.GetBukkitLocation(_W), restoreBlock);
+                        if(!h.Queues.containsKey(restoreBlock.loc)) h.Queues.put(restoreBlock.loc, restoreBlock);
                     }
                     lRB=null;
                     //CurrentPlayer.sendMessage(ChatColor.GREEN+"Schem3 added successfully to Heal Queue");

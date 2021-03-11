@@ -37,14 +37,14 @@ public class ClearRadius implements CommandExecutor {
             rb.world = block.getWorld().getName();
 
             if(!Healer.GetInstance().backupMap.containsKey(rb.loc))
-                Healer.GetInstance().backupMap.put(rb.loc.GetBukkitLocation(block.getWorld()), rb);
+                Healer.GetInstance().backupMap.put(rb.loc, rb);
 
             RestoreBlock rbAir = new RestoreBlock();
             rbAir.biome=block.getBiome();
             rbAir.loc = new Vector3(block.getLocation());
             rbAir.mat=Material.AIR;
             rbAir.world=block.getWorld().getName();
-            if(!Healer.GetInstance().Queues.containsKey(rbAir.loc)) Healer.GetInstance().Queues.put(rbAir.loc.GetBukkitLocation(block.getWorld()), rbAir);
+            if(!Healer.GetInstance().Queues.containsKey(rbAir.loc)) Healer.GetInstance().Queues.put(rbAir.loc, rbAir);
         }
 
         return true;

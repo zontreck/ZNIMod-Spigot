@@ -61,12 +61,12 @@ public class PositionDebug implements CommandExecutor {
             orig.mat = L.getBlock().getType();
             orig.world=rb.world;
 
-            if(!H.Queues.containsKey(L)){
-                H.Queues.put(L, rb);
+            if(!H.Queues.containsKey(rb.loc)){
+                H.Queues.put(rb.loc, rb);
             }
 
-            if(!H.backupMap.containsKey(L)){
-                H.backupMap.put(L, orig);
+            if(!H.backupMap.containsKey(orig.loc)){
+                H.backupMap.put(orig.loc, orig);
             }
         }
 

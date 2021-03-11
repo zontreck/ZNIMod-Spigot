@@ -40,8 +40,8 @@ public class Healer implements Runnable
     }
     public Healer(){}
 
-    public Map<Location, RestoreBlock> Queues = new HashMap<Location, RestoreBlock>();
-    public Map<Location, RestoreBlock> backupMap = new HashMap<Location, RestoreBlock>(); // a non-automatically cleared list
+    public Map<Vector3, RestoreBlock> Queues = new HashMap<Vector3, RestoreBlock>();
+    public Map<Vector3, RestoreBlock> backupMap = new HashMap<Vector3, RestoreBlock>(); // a non-automatically cleared list
     public int Pass = 0;
     public long LastRestoreTime;
 
@@ -51,8 +51,8 @@ public class Healer implements Runnable
 
     public void RemoveRestoreQueueAt(Location loc){
         for (RestoreBlock restoreBlock : Queues.values()) {
-            if(restoreBlock.loc==new Vector3(loc)){
-                Queues.remove(restoreBlock);
+            if(restoreBlock.loc==(new Vector3(loc))){
+                Queues.remove(restoreBlock.loc);
                 return;
             }
         }

@@ -170,7 +170,7 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                             }
                         }
     
-                        if(!h.Queues.containsKey(restoreBlock.loc)) h.Queues.put(restoreBlock.loc.GetBukkitLocation(_W), restoreBlock);
+                        if(!h.Queues.containsKey(restoreBlock.loc)) h.Queues.put(restoreBlock.loc, restoreBlock);
                     }
                     lRB=null;
                     fc=null;

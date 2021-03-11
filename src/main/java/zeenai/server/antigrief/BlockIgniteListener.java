@@ -55,7 +55,7 @@ public class BlockIgniteListener implements Listener {
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
                 Healer.GetInstance().TNT=true;
-                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(rb.world)), rb);
+                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc, rb);
             }
         }
     }
@@ -89,7 +89,7 @@ public class BlockIgniteListener implements Listener {
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
                 Healer.GetInstance().TNT=true;
-                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(rb.world)), rb);
+                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc, rb);
             }
         }
     }
@@ -125,7 +125,7 @@ public class BlockIgniteListener implements Listener {
                 rb.loc = new Vector3(b.getLocation());
                 rb.mat = b.getType();
                 rb.world = b.getWorld().getName();
-                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc.GetBukkitLocation(Main.GetMainInstance().getServer().getWorld(rb.world)), rb);
+                if(!Healer.GetInstance().Queues.containsKey(rb.loc)) Healer.GetInstance().Queues.put(rb.loc, rb);
             }
         }
     }

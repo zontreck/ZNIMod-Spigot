@@ -32,14 +32,14 @@ public class LoadSchematic implements CommandExecutor {
         boolean air=true;
         boolean states=true;
         boolean repair=false;
-        if(args[0].toLowerCase() == "y"){
+        if(args[0].equalsIgnoreCase("y")){
             air=true;
         }else air=false;
 
-        if(args[1].toLowerCase() == "y")states=true;
+        if(args[1].equalsIgnoreCase("y"))states=true;
         else states=false;
 
-        if(args[2].toLowerCase() == "y")repair=true;
+        if(args[2].equalsIgnoreCase("y"))repair=true;
         else repair=false;
 
         schemName = args[3];

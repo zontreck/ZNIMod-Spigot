@@ -1,6 +1,7 @@
 package zeenai.server.schematics.loader.compatibility.v1_16_5;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -90,6 +91,7 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
         
             @Override
             public void run() {
+                Main.GetMainInstance().getServer().broadcastMessage("Loading Schem3 with options: air:"+air+"; repair:"+repairMode+"; states:"+loadStates);
                 int Seq=0;
                 Vector3 PlayerPosition = null;
                 List<Vector3> actualEntityLocations = new ArrayList<Vector3>();
@@ -144,7 +146,7 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                             
                         }
                     }
-                    //CurrentPlayer.sendMessage(ChatColor.AQUA+"Stand by.. Importing schem3");
+                    Main.GetMainInstance().getServer().broadcastMessage(ChatColor.AQUA+"Stand by.. Importing schem3");
                     for (RestoreBlock restoreBlock : lRB) {
                         if(restoreBlock.mat == Material.AIR && !air) {
                             //Main.GetMainInstance().getLogger().info("AIR RULE: Skipping Air");
@@ -153,7 +155,12 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                         Block currentBlock = restoreBlock.loc.GetBukkitLocation(_W).getBlock();
                         if(repairMode && currentBlock.getType() == restoreBlock.mat){
                             if(!restoreBlock.HasState()){
-                                continue;
+                                if(!air)continue;
+                                else{
+                                    if(restoreBlock.mat != Material.AIR){
+                                        continue;
+                                    }
+                                }
                             }
                         }
 
@@ -189,11 +196,11 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                     }
                     lRB=null;
                     fc=null;
-                    //CurrentPlayer.sendMessage(ChatColor.GREEN+"Schem3 added successfully to Heal Queue");
+                    Main.GetMainInstance().getServer().broadcastMessage(ChatColor.GREEN+"Schem3 added successfully to Heal Queue");
                     Seq++;
                 }
-                CurrentSender.sendMessage("Done requesting import");
-                CurrentSender.sendMessage("Scan of entities now in progress");
+                Main.GetMainInstance().getServer().broadcastMessage("Done requesting import");
+                Main.GetMainInstance().getServer().broadcastMessage("Scan of entities now in progress");
 
                 for(Entry<Vector3, Entity> entry : allEntities.entrySet()){
                     boolean isActual=false;
@@ -211,7 +218,7 @@ public class SchematicLoader_v1_16_5 implements SchematicLoader {
                     if(!isActual)entry.getValue().remove();
                 }
 
-                CurrentSender.sendMessage("Entity Scan has Completed.");
+                Main.GetMainInstance().getServer().broadcastMessage("Entity Scan has Completed.");
             }
         });
     }
